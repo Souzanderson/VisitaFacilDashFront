@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
+  public collapsed = false;
   public items = [
     {
       id: 1,
@@ -65,5 +66,10 @@ export class MenuComponent implements OnInit {
 
   close(){
     this.route.navigate(["/"])
+  }
+
+  toggleCollapse() {
+    this.collapsed = !this.collapsed;
+    document.body.classList.toggle('menu-collapsed', this.collapsed);
   }
 }

@@ -11,6 +11,18 @@
     var(--color-primary) 60%,
     #034a6e 100%
   );
+  transition: width 0.25s ease;
+  overflow: hidden;
+
+  &.collapsed {
+    width: 60px;
+
+    .brand-name { display: none; }
+    .nav-label { display: none; }
+    .brand { justify-content: center; padding: 20px 0 18px; }
+    .nav-item { justify-content: center; padding: 10px 0; }
+    .nav-item.active { border-left: 3px solid var(--color-secondary-contrast); padding-left: 0; }
+  }
 }
 
 .sidebar {
@@ -101,6 +113,36 @@
 
     .nav-icon {
       opacity: 1;
+    }
+  }
+}
+
+.collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 36px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: background 0.18s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .collapse-arrow {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 24px;
+    line-height: 1;
+    display: inline-block;
+    transition: transform 0.25s ease;
+
+    &.rotated {
+      transform: rotate(180deg);
     }
   }
 }

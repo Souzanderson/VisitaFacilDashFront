@@ -1,4 +1,4 @@
-<section id="menu">
+<section id="menu" [class.collapsed]="collapsed">
   <div class="sidebar">
 
     <div class="brand">
@@ -12,6 +12,7 @@
         *ngFor="let item of items"
         [ngClass]="{ active: item.route == getroute() }"
         (click)="go(item.id)"
+        [title]="collapsed ? item.label : ''"
       >
         <div class="nav-icon">
           <icon [icon]="item.icon" height="20px" width="20px"></icon>
@@ -20,12 +21,16 @@
       </div>
     </nav>
 
-    <div class="nav-item logout" (click)="close()">
+    <div class="nav-item logout" (click)="close()" [title]="collapsed ? 'Sair' : ''">
       <div class="nav-icon">
         <icon icon="/assets/icons/close.svg" height="20px" width="20px"></icon>
       </div>
       <span class="nav-label">Sair</span>
     </div>
+
+    <button class="collapse-btn" (click)="toggleCollapse()" [title]="collapsed ? 'Expandir menu' : 'Recolher menu'">
+      <span class="collapse-arrow" [class.rotated]="collapsed">&#8249;</span>
+    </button>
 
   </div>
 </section>

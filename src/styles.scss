@@ -150,9 +150,15 @@ h2 {
   margin-left: var(--gap);
   border-radius: var(--radius) 0 0 var(--radius);
   overflow: auto;
+  transition: width 0.25s ease, margin-left 0.25s ease;
   .struct {
     padding: 12px;
   }
+}
+
+body.menu-collapsed #container {
+  width: calc(100vw - 60px);
+  margin-left: 60px;
 }
 
 .c {
