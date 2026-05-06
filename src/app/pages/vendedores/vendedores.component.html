@@ -43,6 +43,7 @@
       </div>
     </div>
 
+    <skeleton type="table" [cols]="8" [rows]="8" *ngIf="loading && !selected"></skeleton>
     <div
       class="table tablestl"
       style="--cs: 320px repeat(7, 1fr)"

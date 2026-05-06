@@ -39,7 +39,8 @@
         </div>
       </div>
     </div>
-    <div class="form">
+    <skeleton type="table" [cols]="6" [rows]="8" *ngIf="loading"></skeleton>
+    <div class="form" *ngIf="!loading">
       <div class="table" style="--cs: 1fr 1fr 1fr" #table>
         <div class="toptable legendtoptable" table="true">
           <div class="label alc">Total de Agendamento: {{ list.length }}</div>

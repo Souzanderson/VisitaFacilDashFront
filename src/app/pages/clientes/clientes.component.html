@@ -19,6 +19,7 @@
         <datepicker #dtf placeholder="Data Final"></datepicker>
       </div>
     </div>
+    <skeleton type="table" [cols]="4" [rows]="10" *ngIf="loading"></skeleton>
     <div
       class="table"
       style="--cs: 1fr 1fr 250px 250px"

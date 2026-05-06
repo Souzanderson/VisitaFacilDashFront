@@ -48,6 +48,8 @@
         </div>
       </div>
     </div>
+    <skeleton type="chart" [count]="4" *ngIf="loading"></skeleton>
+    <skeleton type="table" [cols]="4" [rows]="8" *ngIf="loading"></skeleton>
     <div class="form" *ngIf="!loading">
       <!-- APENAS PARA IMPRESSÃO -->
       <div class="table print">

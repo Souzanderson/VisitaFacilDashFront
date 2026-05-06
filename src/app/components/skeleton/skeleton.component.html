@@ -1,0 +1,27 @@
+<ng-container *ngIf="type === 'table'">
+  <div class="sk-table">
+    <div class="sk-header">
+      <div class="sk-cell" *ngFor="let c of colsArr"></div>
+    </div>
+    <div class="sk-row" *ngFor="let r of rowsArr">
+      <div class="sk-cell" *ngFor="let c of colsArr"></div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="type === 'cards'">
+  <div class="sk-cards">
+    <div class="sk-card" *ngFor="let c of countArr">
+      <div class="sk-card-title"></div>
+      <div class="sk-card-line"></div>
+      <div class="sk-card-line short"></div>
+      <div class="sk-card-line"></div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="type === 'chart'">
+  <div class="sk-charts">
+    <div class="sk-chart" *ngFor="let c of countArr"></div>
+  </div>
+</ng-container>

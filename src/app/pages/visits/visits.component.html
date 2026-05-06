@@ -45,6 +45,7 @@
       </div>
     </div>
     <br />
+    <skeleton type="table" [cols]="6" [rows]="8" *ngIf="loading && visitas.length == 0"></skeleton>
     <div
       class="table tablestl"
       style="--cs: repeat(5, 1fr) 150px"

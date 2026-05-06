@@ -1,4 +1,8 @@
 <main id="container">
+  <div class="struct" *ngIf="loading">
+    <skeleton type="chart" [count]="2"></skeleton>
+    <skeleton type="cards" [count]="4"></skeleton>
+  </div>
   <div class="struct" *ngIf="!loading">
     <!-- <h2>Visitas Realizadas</h2> -->
     <div class="charts">

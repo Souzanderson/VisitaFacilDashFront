@@ -1,0 +1,104 @@
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+%shimmer {
+  background: linear-gradient(90deg, #e4e4e4 25%, #f2f2f2 50%, #e4e4e4 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+// TABLE
+.sk-table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.sk-header {
+  display: flex;
+  gap: 8px;
+  height: 36px;
+  background: var(--color-table-top);
+  border-radius: 6px;
+  padding: 0 8px;
+  align-items: center;
+
+  .sk-cell {
+    flex: 1;
+    height: 14px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 4px;
+    animation: none;
+  }
+}
+
+.sk-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 8px;
+  height: 44px;
+  align-items: center;
+  border-radius: 6px;
+  background: white;
+
+  &:nth-child(odd) { background: var(--color-odd); }
+
+  .sk-cell {
+    flex: 1;
+    height: 14px;
+    @extend %shimmer;
+  }
+}
+
+// CARDS
+.sk-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.sk-card {
+  flex: 1 1 220px;
+  min-width: 200px;
+  border-radius: var(--radius);
+  background: white;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.sk-card-title {
+  height: 18px;
+  width: 60%;
+  @extend %shimmer;
+}
+
+.sk-card-line {
+  height: 13px;
+  @extend %shimmer;
+
+  &.short { width: 50%; }
+}
+
+// CHART
+.sk-charts {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+
+.sk-chart {
+  flex: 1 1 300px;
+  height: 50vh;
+  min-height: 200px;
+  border-radius: var(--radius);
+  @extend %shimmer;
+}
