@@ -140,8 +140,9 @@ export class VisitasclienteComponent implements OnInit {
 
   shareReport() {
     const url = `${window.location.origin}/relatorio/${this.id}?dtini=${this.dtini}&dtfim=${this.dtfim}&token=${this.conn.user.hascode}&sys=${this.conn.user.idsistema}`;
+    window.open(url, '_blank');
     navigator.clipboard.writeText(url).then(() => {
-      this.util.alert('Link copiado para a área de transferência!', 'var(--color-tertiary)', 'white', 3000);
+      this.util.alert('Relatório aberto e link copiado!', 'var(--color-tertiary)', 'white', 3000);
     });
   }
 
