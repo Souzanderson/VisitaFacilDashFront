@@ -66,6 +66,7 @@
           <span *ngIf="v.nmpropriedade" class="rel-visit-prop">{{ v.nmpropriedade }}</span>
         </div>
         <div class="rel-visit-body">
+
           <div class="rel-field-row">
             <div class="rel-field" *ngIf="v.dscultura">
               <span class="rel-field-label">Cultura</span>
@@ -89,12 +90,61 @@
             </div>
           </div>
 
+          <!-- MAPAS -->
+          <div class="rel-maps" *ngIf="hasPropLocation(v) || hasVisitLocation(v)">
+            <div class="rel-maps-label">Localização</div>
+            <div class="rel-maps-grid">
+
+              <div class="rel-map-card" *ngIf="hasPropLocation(v)">
+                <div class="rel-map-title">Localização da Propriedade</div>
+                <!-- Interativo (tela) -->
+                <div class="rel-map-interactive noprint">
+                  <mapscomp
+                    [id]="'rel-prop-' + i"
+                    width="100%"
+                    height="220px"
+                    [zoom]="15"
+                    [location]="propLocation(v)"
+                    icon="/assets/icons/homemarker.png"
+                  ></mapscomp>
+                </div>
+                <!-- Estático (impressão) -->
+                <img class="rel-map-static printonly"
+                  [src]="staticMapUrl(v.enderecocompleto.latitude, v.enderecocompleto.longitude, 15)"
+                  alt="Mapa da propriedade" />
+              </div>
+
+              <div class="rel-map-card" *ngIf="hasVisitLocation(v)">
+                <div class="rel-map-title">Posição de Abertura da Visita</div>
+                <div class="rel-map-interactive noprint">
+                  <mapscomp
+                    [id]="'rel-visit-' + i"
+                    width="100%"
+                    height="220px"
+                    [zoom]="15"
+                    [location]="visitLocation(v)"
+                    icon="/assets/icons/carmarker.svg"
+                  ></mapscomp>
+                </div>
+                <img class="rel-map-static printonly"
+                  [src]="staticMapUrl(v.latitudeoriginal, v.longitudeoriginal, 15)"
+                  alt="Mapa de abertura da visita" />
+              </div>
+
+            </div>
+          </div>
+
+          <!-- IMAGENS -->
           <div class="rel-images" *ngIf="v.imagens && v.imagens.length > 0">
             <div class="rel-images-label">Imagens ({{ v.imagens.length }})</div>
             <div class="rel-images-grid">
-              <img *ngFor="let img of v.imagens" [src]="img.linkimg" />
+              <div class="rel-img-wrap" *ngFor="let img of v.imagens; let j = index" (click)="openLightbox(v.imagens, j)">
+                <img [src]="img.linkimg" />
+                <div class="rel-img-overlay noprint">&#128269; Ver</div>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -108,4 +158,20 @@
 
     </div>
   </ng-container>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="rel-lightbox-overlay" *ngIf="lightbox" (click)="closeLightbox()">
+  <div class="rel-lightbox-content" (click)="$event.stopPropagation()">
+    <img [src]="lightbox.img" [style.transform]="getLightboxTransform()" />
+    <div class="rel-lightbox-controls">
+      <button (click)="prevImage()" [disabled]="lightbox.idx === 0" title="Anterior">&#10094;</button>
+      <button (click)="rotateLightbox(-1)" title="Girar esquerda">&#8630;</button>
+      <button (click)="rotateLightbox(1)" title="Girar direita">&#8631;</button>
+      <button (click)="flipLightbox()" title="Espelhar">&#8596;</button>
+      <button (click)="nextImage()" [disabled]="lightbox.idx === lightbox.imgs.length - 1" title="Próxima">&#10095;</button>
+      <button class="btn-close" (click)="closeLightbox()" title="Fechar">&#10005;</button>
+    </div>
+    <div class="rel-lightbox-counter">{{ lightbox.idx + 1 }} / {{ lightbox.imgs.length }}</div>
+  </div>
 </div>

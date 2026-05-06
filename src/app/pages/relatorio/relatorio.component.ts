@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
@@ -19,7 +19,18 @@ export class RelatorioComponent implements OnInit {
   private sys: string;
   private idcliente: string;
 
+  public lightbox: { img: string; rotation: number; flipped: boolean; imgs: any[]; idx: number } | null = null;
+
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(e: KeyboardEvent) {
+    if (!this.lightbox) return;
+    if (e.key === 'Escape')      this.closeLightbox();
+    if (e.key === 'ArrowLeft')   this.prevImage();
+    if (e.key === 'ArrowRight')  this.nextImage();
+    if (e.key === 'r')           this.rotateLightbox(1);
+  }
 
   ngOnInit(): void {
     this.route.params.forEach((p) => (this.idcliente = p['idcliente']));
@@ -67,5 +78,62 @@ export class RelatorioComponent implements OnInit {
   get successCount() { return this.visitas.filter((v) => !v.idmotivo).length; }
   get failCount()    { return this.visitas.filter((v) =>  v.idmotivo).length; }
 
+  hasPropLocation(v: any): boolean {
+    return v.enderecocompleto && v.enderecocompleto.latitude && v.enderecocompleto.longitude;
+  }
+
+  hasVisitLocation(v: any): boolean {
+    return !!(v.latitudeoriginal && v.longitudeoriginal);
+  }
+
+  propLocation(v: any) {
+    return { lat: Number(v.enderecocompleto.latitude), lng: Number(v.enderecocompleto.longitude) };
+  }
+
+  visitLocation(v: any) {
+    return { lat: Number(v.latitudeoriginal), lng: Number(v.longitudeoriginal) };
+  }
+
+  staticMapUrl(lat: number, lng: number, zoom = 15): string {
+    const key = environment.GOOGLE_API_MAPS_KEY;
+    return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=600x300&maptype=hybrid&markers=color:red%7C${lat},${lng}&key=${key}`;
+  }
+
   print() { window.print(); }
+
+  // Lightbox
+  openLightbox(imgs: any[], idx: number) {
+    this.lightbox = { img: imgs[idx].linkimg, rotation: 0, flipped: false, imgs, idx };
+  }
+
+  closeLightbox() { this.lightbox = null; }
+
+  rotateLightbox(dir: number) {
+    this.lightbox.rotation = (this.lightbox.rotation + dir * 90 + 360) % 360;
+  }
+
+  flipLightbox() { this.lightbox.flipped = !this.lightbox.flipped; }
+
+  prevImage() {
+    if (this.lightbox && this.lightbox.idx > 0) {
+      this.lightbox.idx--;
+      this.lightbox.img = this.lightbox.imgs[this.lightbox.idx].linkimg;
+      this.lightbox.rotation = 0;
+      this.lightbox.flipped = false;
+    }
+  }
+
+  nextImage() {
+    if (this.lightbox && this.lightbox.idx < this.lightbox.imgs.length - 1) {
+      this.lightbox.idx++;
+      this.lightbox.img = this.lightbox.imgs[this.lightbox.idx].linkimg;
+      this.lightbox.rotation = 0;
+      this.lightbox.flipped = false;
+    }
+  }
+
+  getLightboxTransform() {
+    if (!this.lightbox) return '';
+    return `rotate(${this.lightbox.rotation}deg) scaleX(${this.lightbox.flipped ? -1 : 1})`;
+  }
 }

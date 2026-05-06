@@ -343,12 +343,12 @@
                   : false
               "
             >
-              <button class="btn-expand-map" (click)="openMapModal({ id: 'mapprop'+i, location: getPropLocation(item.enderecocompleto.latitude, item.enderecocompleto.longitude), zoom: 10, title: 'Localização da Propriedade' })">&#10064; Expandir</button>
+              <button class="btn-expand-map" (click)="openMapModal({ id: 'mapprop'+i, location: getPropLocation(item.enderecocompleto.latitude, item.enderecocompleto.longitude), zoom: 15, title: 'Localização da Propriedade' })">&#10064; Expandir</button>
               <mapscomp
                 [id]="'mapprop' + i"
                 width="100%"
                 height="18vw"
-                [zoom]="10"
+                [zoom]="15"
                 [location]="getPropLocation(item.enderecocompleto.latitude, item.enderecocompleto.longitude)"
                 icon="/assets/icons/homemarker.png"
               ></mapscomp>
@@ -360,11 +360,11 @@
               title="Posição de Abertura da Visita"
               *ngIf="item.latitudeoriginal && item.longitudeoriginal"
             >
-              <button class="btn-expand-map" (click)="openMapModal({ id: 'mapvisita'+i, location: getPropLocation(item.latitudeoriginal, item.longitudeoriginal), zoom: 10, title: 'Posição de Abertura da Visita' })">&#10064; Expandir</button>
+              <button class="btn-expand-map" (click)="openMapModal({ id: 'mapvisita'+i, location: getPropLocation(item.latitudeoriginal, item.longitudeoriginal), zoom: 15, title: 'Posição de Abertura da Visita' })">&#10064; Expandir</button>
               <mapscomp
                 width="100%"
                 height="18vw"
-                [zoom]="10"
+                [zoom]="15"
                 [id]="'mapvisita' + i"
                 [location]="getPropLocation(item.latitudeoriginal, item.longitudeoriginal)"
                 icon="/assets/icons/carmarker.svg"
