@@ -42,9 +42,11 @@
       <div
         class="button btlg"
         style="height: 28px; width: 100%"
-        (click)="login()"
+        [class.btlg-loading]="loading"
+        (click)="!loading && login()"
       >
-        Entrar
+        <span *ngIf="!loading">Entrar</span>
+        <span *ngIf="loading" class="loading-dots">Entrando</span>
       </div>
     </div>
   </div>
