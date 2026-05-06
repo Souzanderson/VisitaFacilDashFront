@@ -37,6 +37,7 @@ import { FixedPipe } from './pipes/fixed.pipe';
 import { AgendamentosComponent } from './pages/agendamentos/agendamentos.component';
 import { AddagendamentoComponent } from './registers/addagendamento/addagendamento.component';
 import { SkeletonComponent } from './components/skeleton/skeleton.component';
+import { RelatorioComponent } from './pages/relatorio/relatorio.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { SkeletonComponent } from './components/skeleton/skeleton.component';
     AgendamentosComponent,
     AddagendamentoComponent,
     SkeletonComponent,
+    RelatorioComponent,
   ],
   imports: [
     BrowserModule,

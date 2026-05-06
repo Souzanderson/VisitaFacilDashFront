@@ -1,0 +1,111 @@
+<div id="relatorio">
+
+  <div class="rel-loading" *ngIf="loading">
+    <div class="rel-spinner"></div>
+    <p>Carregando relatório...</p>
+  </div>
+
+  <div class="rel-error" *ngIf="error && !loading">
+    <p>Link inválido ou expirado. Solicite um novo link ao seu representante.</p>
+  </div>
+
+  <ng-container *ngIf="!loading && !error && cliente">
+
+    <div class="rel-header noprint">
+      <div class="rel-logo">
+        <img src="/assets/images/agrodadoscubew.svg" height="40px" />
+        <span>Agrodados Visitas Dashboard</span>
+      </div>
+      <button class="rel-print-btn" (click)="print()">Imprimir / Salvar PDF</button>
+    </div>
+
+    <div class="rel-body">
+
+      <div class="rel-title">Relatório de Visitas</div>
+
+      <div class="rel-client-card">
+        <div class="rel-client-row">
+          <div class="rel-client-field">
+            <span class="rel-field-label">Cliente</span>
+            <span class="rel-field-value">{{ cliente.nmcliente }}</span>
+          </div>
+          <div class="rel-client-field">
+            <span class="rel-field-label">Representante</span>
+            <span class="rel-field-value">{{ cliente.vendedor }}</span>
+          </div>
+          <div class="rel-client-field">
+            <span class="rel-field-label">Período</span>
+            <span class="rel-field-value">{{ dtini | date:'dd/MM/yyyy':'UTC' }} — {{ dtfim | date:'dd/MM/yyyy':'UTC' }}</span>
+          </div>
+          <div class="rel-client-field">
+            <span class="rel-field-label">Última Visita</span>
+            <span class="rel-field-value">{{ cliente.dtultima | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+        <div class="rel-stats">
+          <div class="rel-stat">
+            <span class="stat-value">{{ visitas.length }}</span>
+            <span class="stat-label">Total de Visitas</span>
+          </div>
+          <div class="rel-stat success">
+            <span class="stat-value">{{ successCount }}</span>
+            <span class="stat-label">Bem-sucedidas</span>
+          </div>
+          <div class="rel-stat fail">
+            <span class="stat-value">{{ failCount }}</span>
+            <span class="stat-label">Malsucedidas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rel-visit" *ngFor="let v of visitas; let i = index">
+        <div class="rel-visit-header" [class.rel-visit-success]="!v.idmotivo" [class.rel-visit-fail]="v.idmotivo">
+          <span class="rel-visit-num">Visita #{{ i + 1 }}</span>
+          <span class="rel-visit-badge">{{ v.idmotivo ? 'Malsucedida' : 'Bem-sucedida' }}</span>
+          <span class="rel-visit-date">{{ v.dtvisita | date:'dd/MM/yyyy' }} {{ v.horavisita }}</span>
+          <span *ngIf="v.nmpropriedade" class="rel-visit-prop">{{ v.nmpropriedade }}</span>
+        </div>
+        <div class="rel-visit-body">
+          <div class="rel-field-row">
+            <div class="rel-field" *ngIf="v.dscultura">
+              <span class="rel-field-label">Cultura</span>
+              <span class="rel-field-value">{{ v.dscultura }}</span>
+            </div>
+            <div class="rel-field" *ngIf="v.dsevento">
+              <span class="rel-field-label">Evento</span>
+              <span class="rel-field-value">{{ v.dsevento }}</span>
+            </div>
+            <div class="rel-field" *ngIf="v.objetivo">
+              <span class="rel-field-label">Objetivo</span>
+              <span class="rel-field-value">{{ v.objetivo }}</span>
+            </div>
+            <div class="rel-field" *ngIf="v.dsproblema">
+              <span class="rel-field-label">Problema</span>
+              <span class="rel-field-value problem">{{ v.dsproblema }}</span>
+            </div>
+            <div class="rel-field" *ngIf="v.dsrecomendacao">
+              <span class="rel-field-label">Recomendação</span>
+              <span class="rel-field-value">{{ v.dsrecomendacao }}</span>
+            </div>
+          </div>
+
+          <div class="rel-images" *ngIf="v.imagens && v.imagens.length > 0">
+            <div class="rel-images-label">Imagens ({{ v.imagens.length }})</div>
+            <div class="rel-images-grid">
+              <img *ngFor="let img of v.imagens" [src]="img.linkimg" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rel-empty" *ngIf="visitas.length === 0">
+        Nenhuma visita encontrada no período informado.
+      </div>
+
+      <div class="rel-footer">
+        Relatório gerado pelo Agrodados Visitas Dashboard &mdash; {{ dtini | date:'dd/MM/yyyy':'UTC' }} a {{ dtfim | date:'dd/MM/yyyy':'UTC' }}
+      </div>
+
+    </div>
+  </ng-container>
+</div>

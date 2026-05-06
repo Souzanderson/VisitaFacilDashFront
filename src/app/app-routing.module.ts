@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MapsgoogleComponent } from './components/mapsgoogle/mapsgoogle.component';
+import { RelatorioComponent } from './pages/relatorio/relatorio.component';
 import { VisitasclienteComponent } from './details/visitascliente/visitascliente.component';
 import { AgendamentosComponent } from './pages/agendamentos/agendamentos.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'visitacliente/:idcliente', component: VisitasclienteComponent },
   { path: 'mapa', component: MapsgoogleComponent },
   { path: 'agendamentos', component: AgendamentosComponent },
+  { path: 'relatorio/:idcliente', component: RelatorioComponent },
   { path: '', component: LoginComponent },
 ];
 

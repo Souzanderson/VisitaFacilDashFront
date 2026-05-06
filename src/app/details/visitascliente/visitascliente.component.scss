@@ -124,3 +124,196 @@
     background: var(--color-primary-contrast) !important;
   }
 }
+
+// Cabeçalho de cada visita
+.visit-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--color-primary);
+  border-radius: var(--radius) var(--radius) 0 0;
+  margin-top: 20px;
+  flex-wrap: wrap;
+
+  .visit-number {
+    color: var(--color-secondary-contrast);
+    font-weight: 700;
+    font-size: 15px;
+    font-family: Poppins, sans-serif;
+    white-space: nowrap;
+  }
+
+  .visit-status {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+
+    &.success { background: var(--color-tertiary); color: white; }
+    &.fail    { background: var(--color-red); color: white; }
+  }
+
+  .visit-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+
+    span::before { content: '· '; }
+  }
+}
+
+// Botão compartilhar
+.btshare {
+  background: var(--color-secondary-light) !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// Botão expandir mapa
+.btn-expand-map {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-bottom: 6px;
+  font-family: Poppins, sans-serif;
+  transition: background 0.15s ease;
+
+  &:hover { background: var(--color-secondary-light); }
+}
+
+// Imagem clicável
+.image {
+  position: relative;
+  cursor: pointer;
+
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-family: Poppins, sans-serif;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: 4px;
+  }
+
+  &:hover .image-overlay { opacity: 1; }
+}
+
+// Lightbox
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 90vw;
+  max-height: 90vh;
+
+  img {
+    max-width: 85vw;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: transform 0.25s ease;
+  }
+}
+
+.lightbox-controls {
+  display: flex;
+  gap: 8px;
+
+  button {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+
+    &:hover:not(:disabled) { background: rgba(255,255,255,0.3); }
+    &:disabled { opacity: 0.3; cursor: default; }
+    &.btn-close { background: rgba(202,17,17,0.6); &:hover { background: rgba(202,17,17,0.9); } }
+  }
+}
+
+.lightbox-counter {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  font-family: Poppins, sans-serif;
+}
+
+// Modal de mapa
+.map-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-modal-content {
+  width: 90vw;
+  height: 85vh;
+  background: white;
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--color-primary);
+  color: white;
+  font-family: Poppins, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.8;
+    &:hover { opacity: 1; }
+  }
+}

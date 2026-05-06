@@ -26,8 +26,12 @@
           >
           </dropsearch>
         </div>
-        <div class="item">
+        <div class="item" style="display:flex;gap:8px">
           <div class="button btprint" (click)="report()">Imprimir</div>
+          <div class="button btshare" (click)="shareReport()">
+            <icon icon="/assets/icons/share.svg" width="16px" height="16px"></icon>
+            Compartilhar
+          </div>
         </div>
       </div>
       <div class="filtros" style="--cs: 300px 1fr">
@@ -129,6 +133,17 @@
       </div>
       <br />
       <div *ngFor="let item of visitas; let i = index">
+        <div class="visit-header">
+          <div class="visit-number">Visita #{{ i + 1 }}</div>
+          <div class="visit-status" [class.success]="!item.idmotivo" [class.fail]="item.idmotivo">
+            {{ item.idmotivo ? 'Malsucedida' : 'Bem-sucedida' }}
+          </div>
+          <div class="visit-meta">
+            <span>{{ item.dtvisita | date: 'dd/MM/yyyy' }} {{ item.horavisita }}</span>
+            <span *ngIf="item.nmvendedor">{{ item.nmvendedor }}</span>
+            <span *ngIf="item.nmpropriedade">{{ item.nmpropriedade }}</span>
+          </div>
+        </div>
         <div class="table">
           <div class="toptable mg4">
             <div class="label">DETALHES</div>
@@ -328,17 +343,13 @@
                   : false
               "
             >
+              <button class="btn-expand-map" (click)="openMapModal({ id: 'mapprop'+i, location: getPropLocation(item.enderecocompleto.latitude, item.enderecocompleto.longitude), zoom: 10, title: 'Localização da Propriedade' })">&#10064; Expandir</button>
               <mapscomp
                 [id]="'mapprop' + i"
                 width="100%"
-                height="20vw"
+                height="18vw"
                 [zoom]="10"
-                [location]="
-                  getPropLocation(
-                    item.enderecocompleto.latitude,
-                    item.enderecocompleto.longitude
-                  )
-                "
+                [location]="getPropLocation(item.enderecocompleto.latitude, item.enderecocompleto.longitude)"
                 icon="/assets/icons/homemarker.png"
               ></mapscomp>
             </card>
@@ -349,14 +360,13 @@
               title="Posição de Abertura da Visita"
               *ngIf="item.latitudeoriginal && item.longitudeoriginal"
             >
+              <button class="btn-expand-map" (click)="openMapModal({ id: 'mapvisita'+i, location: getPropLocation(item.latitudeoriginal, item.longitudeoriginal), zoom: 10, title: 'Posição de Abertura da Visita' })">&#10064; Expandir</button>
               <mapscomp
                 width="100%"
-                height="20vw"
+                height="18vw"
                 [zoom]="10"
                 [id]="'mapvisita' + i"
-                [location]="
-                  getPropLocation(item.latitudeoriginal, item.longitudeoriginal)
-                "
+                [location]="getPropLocation(item.latitudeoriginal, item.longitudeoriginal)"
                 icon="/assets/icons/carmarker.svg"
               ></mapscomp>
             </card>
@@ -367,9 +377,10 @@
               *ngIf="item.demarcacaoprop"
               title="Demarcação da Visita"
             >
+              <button class="btn-expand-map" (click)="openMapModal({ id: 'demarcacao'+i, location: item.demarcacaoprop.position, demarcacao: item.demarcacaoprop.locations, zoom: 15, title: 'Demarcação da Visita' })">&#10064; Expandir</button>
               <mapscomp
                 width="100%"
-                height="20vw"
+                height="18vw"
                 [zoom]="15"
                 [id]="'demarcacao' + i"
                 [location]="item.demarcacaoprop.position"
@@ -385,8 +396,9 @@
             *ngIf="item.imagens"
             style="margin: 4px"
           >
-            <div class="image" *ngFor="let img of item.imagens">
+            <div class="image" *ngFor="let img of item.imagens; let j = index" (click)="openLightbox(item.imagens, j)">
               <img [src]="img.linkimg" />
+              <div class="image-overlay">&#128269; Ver</div>
             </div>
           </div>
         </div>
@@ -396,3 +408,37 @@
 </main>
 <menu></menu>
 <spinner *ngIf="loading"></spinner>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" *ngIf="lightbox" (click)="closeLightbox()">
+  <div class="lightbox-content" (click)="$event.stopPropagation()">
+    <img [src]="lightbox.img" [style.transform]="getLightboxTransform()" />
+    <div class="lightbox-controls">
+      <button (click)="prevImage()" [disabled]="lightbox.idx === 0" title="Anterior">&#10094;</button>
+      <button (click)="rotateLightbox(-1)" title="Girar esquerda">&#8630;</button>
+      <button (click)="rotateLightbox(1)" title="Girar direita">&#8631;</button>
+      <button (click)="flipLightbox()" title="Espelhar">&#8596;</button>
+      <button (click)="nextImage()" [disabled]="lightbox.idx === lightbox.imgs.length - 1" title="Próxima">&#10095;</button>
+      <button class="btn-close" (click)="closeLightbox()" title="Fechar">&#10005;</button>
+    </div>
+    <div class="lightbox-counter">{{ lightbox.idx + 1 }} / {{ lightbox.imgs.length }}</div>
+  </div>
+</div>
+
+<!-- MAP MODAL -->
+<div class="map-modal-overlay" *ngIf="mapModal" (click)="closeMapModal()">
+  <div class="map-modal-content" (click)="$event.stopPropagation()">
+    <div class="map-modal-header">
+      <span>{{ mapModal.title }}</span>
+      <button (click)="closeMapModal()">&#10005;</button>
+    </div>
+    <mapscomp
+      id="modal-map"
+      width="100%"
+      height="calc(85vh - 48px)"
+      [zoom]="mapModal.zoom"
+      [location]="mapModal.location"
+      [demarcacao]="mapModal.demarcacao"
+    ></mapscomp>
+  </div>
+</div>

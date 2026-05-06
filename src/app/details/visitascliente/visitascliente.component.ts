@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { DatepickerComponent } from 'src/app/components/datepicker/datepicker.component';
@@ -38,6 +38,18 @@ export class VisitasclienteComponent implements OnInit {
     { sector: 'Bem-sucedidas', size: 0 },
     { sector: 'Malsucedidas', size: 0 },
   ];
+
+  public lightbox: { img: string; rotation: number; flipped: boolean; imgs: any[]; idx: number } | null = null;
+  public mapModal: { id: string; location?: any; demarcacao?: any; zoom: number; title: string } | null = null;
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(e: KeyboardEvent) {
+    if (!this.lightbox) return;
+    if (e.key === 'Escape') this.closeLightbox();
+    if (e.key === 'ArrowLeft') this.prevImage();
+    if (e.key === 'ArrowRight') this.nextImage();
+    if (e.key === 'r') this.rotateLightbox(1);
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -125,6 +137,54 @@ export class VisitasclienteComponent implements OnInit {
   report() {
     window.print();
   }
+
+  shareReport() {
+    const url = `${window.location.origin}/relatorio/${this.id}?dtini=${this.dtini}&dtfim=${this.dtfim}&token=${this.conn.user.hascode}&sys=${this.conn.user.idsistema}`;
+    navigator.clipboard.writeText(url).then(() => {
+      this.util.alert('Link copiado para a área de transferência!', 'var(--color-tertiary)', 'white', 3000);
+    });
+  }
+
+  openLightbox(imgs: any[], idx: number) {
+    this.lightbox = { img: imgs[idx].linkimg, rotation: 0, flipped: false, imgs, idx };
+  }
+
+  closeLightbox() { this.lightbox = null; }
+
+  rotateLightbox(dir: number) {
+    this.lightbox.rotation = (this.lightbox.rotation + dir * 90 + 360) % 360;
+  }
+
+  flipLightbox() { this.lightbox.flipped = !this.lightbox.flipped; }
+
+  prevImage() {
+    if (this.lightbox && this.lightbox.idx > 0) {
+      this.lightbox.idx--;
+      this.lightbox.img = this.lightbox.imgs[this.lightbox.idx].linkimg;
+      this.lightbox.rotation = 0;
+      this.lightbox.flipped = false;
+    }
+  }
+
+  nextImage() {
+    if (this.lightbox && this.lightbox.idx < this.lightbox.imgs.length - 1) {
+      this.lightbox.idx++;
+      this.lightbox.img = this.lightbox.imgs[this.lightbox.idx].linkimg;
+      this.lightbox.rotation = 0;
+      this.lightbox.flipped = false;
+    }
+  }
+
+  getLightboxTransform() {
+    if (!this.lightbox) return '';
+    return `rotate(${this.lightbox.rotation}deg) scaleX(${this.lightbox.flipped ? -1 : 1})`;
+  }
+
+  openMapModal(config: { id: string; location?: any; demarcacao?: any; zoom: number; title: string }) {
+    this.mapModal = config;
+  }
+
+  closeMapModal() { this.mapModal = null; }
 
   getKm(visita) {
     try {
