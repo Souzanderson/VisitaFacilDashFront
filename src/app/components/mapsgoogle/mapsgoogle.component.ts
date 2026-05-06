@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Loader } from "@googlemaps/js-api-loader";
-import { stylemap } from "./style";
 import { environment } from "src/environments/environment";
 
 const loader = new Loader({
@@ -73,7 +72,7 @@ export class MapsgoogleComponent implements OnInit {
         {
           center: this.center,
           zoom: this.zoom,
-          styles: stylemap,
+          mapId: environment.GOOGLE_MAP_ID,
           // disableDefaultUI: true,
           controlSize: 24,
           mapTypeId: this.typemap,
