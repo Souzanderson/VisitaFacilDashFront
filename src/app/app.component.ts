@@ -10,6 +10,8 @@ import { ConnectionService } from './services/connection.service';
 export class AppComponent {
   title = 'dashVisitas';
   constructor(private conn: ConnectionService, private nav: Router) {
-    this.nav.navigate(["/"])
+    if (!window.location.pathname.startsWith('/relatorio')) {
+      this.nav.navigate(["/"]);
+    }
   }
 }
