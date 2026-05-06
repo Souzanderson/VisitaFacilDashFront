@@ -88,6 +88,11 @@
     background-color: var(--color-primary-contrast);
     padding: 12px;
     resize: none;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 }
 
