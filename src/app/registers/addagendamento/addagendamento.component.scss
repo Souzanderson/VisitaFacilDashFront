@@ -1,0 +1,55 @@
+#modal {
+  position: relative;
+}
+.form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: space-around;
+  align-items: stretch;
+  justify-content: flex-start;
+  div {
+    padding: 12px;
+    margin: 0 auto;
+    width: 500px;
+
+    span {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.button {
+  position: absolute;
+  bottom: 0px;
+  width: 584px;
+  height: 40px;
+  pointer-events: all;
+}
+
+.button:active {
+  transform: scale(1) !important;
+}
+
+.btloading {
+  pointer-events: none;
+  background: #797979;
+}
+
+.span{
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  resize: none;
+  outline: none;
+  background-color: var(--color-primary-contrast);
+  border: unset;
+  color: var(--color-primary);
+  width: 481px;
+  padding: 12px;
+  box-shadow: 1px 1px 5px #00000033;
+  border-radius: 5px;
+}

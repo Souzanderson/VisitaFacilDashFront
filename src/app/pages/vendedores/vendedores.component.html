@@ -1,0 +1,197 @@
+<main id="container">
+  <div class="struct">
+    <h2>Visitas por Vendedores</h2>
+
+    <div
+      class="search"
+      style="display: flex; align-items: center"
+      *ngIf="!selected"
+    >
+      <div style="width: 30%; padding: 4px">
+        <searchbar
+          #shc
+          placeholder="Pesquisar vendedor..."
+          (onchange)="term = $event; search()"
+        ></searchbar>
+      </div>
+      <div style="width: 20%; padding: 4px">
+        <datepicker #dti placeholder="Data Inicial"></datepicker>
+      </div>
+      <div style="width: 20%; padding: 4px">
+        <datepicker #dtf placeholder="Data Final"></datepicker>
+      </div>
+      <div class="checkbox">
+        <input
+          type="checkbox"
+          id="scales"
+          name="scales"
+          [(ngModel)]="notvisit"
+          (change)="search()"
+        />
+        <label for="scales" class="noselect"
+          >Exibir Vendedor sem visitas?</label
+        >
+      </div>
+      <div style="width: 15%; padding: 4px">
+        <div
+          class="button"
+          style="width: auto; height: 26px"
+          (click)="searchWs()"
+        >
+          Pesquisar
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="table tablestl"
+      style="--cs: 320px repeat(7, 1fr)"
+      *ngIf="!loading && !selected"
+    >
+      <div class="toptable" table="true">
+        <div class="label">Vendedor</div>
+        <div class="label jc">Clientes Ativos</div>
+        <div class="label jc">Clientes Contactados</div>
+        <div class="label jc">Contatos</div>
+        <div class="label jc">Contatos com sucesso</div>
+        <div class="label jc">Primeira Visita</div>
+        <div class="label jc">Última Visita</div>
+        <div class="label jc">Distância Percorrida</div>
+      </div>
+      <div
+        class="bodytable"
+        *ngFor="let item of vendedores"
+        table="true"
+        (click)="open(item)"
+      >
+        <div class="label">({{ item.id }}) {{ item.nmvendedor }}</div>
+        <div class="label jc">{{ item.clientes }}</div>
+        <div class="label jc">{{ item.clientesvisitados }}</div>
+        <div class="label jc">{{ item.visitas }}</div>
+        <div class="label jc">{{ item.sucessovisitas }}</div>
+        <div class="label jc">
+          {{ item.dtprimeira | date: "dd/MM/yyyy HH:mm" }}
+        </div>
+        <div class="label jc">
+          {{ item.dtultima | date: "dd/MM/yyyy HH:mm" }}
+        </div>
+        <div class="label jc" *ngIf="item.kmtotal">{{ item.kmtotal + " km" }}</div>
+        <div class="label jc" *ngIf="!item.kmtotal"> 0 km</div>
+
+      </div>
+    </div>
+
+    <!-- VISITAS -->
+    <div *ngIf="!loading && visitas.length > 0">
+      <div class="chip" (click)="clear()">
+        <icon height="20px" width="20px" icon="/assets/icons/back.svg"></icon>
+        {{ selected.kmtotal + " km" }} | Vendedor: {{ selected.nmvendedor }} |
+        Data Inicial: {{ dtini | date: "dd/MM/yyyy" }} | Data Final:
+        {{ dtfim | date: "dd/MM/YYYY" }}
+      </div>
+    </div>
+    <div
+      class="table"
+      style="--cs: 2fr 1fr repeat(6, 140px)"
+      *ngIf="!loading && visitas.length > 0"
+    >
+      <div class="toptable" table="true">
+        <div class="label">Detalhes</div>
+        <div class="label jc">Vendedor</div>
+        <div class="label jc">Objetivo</div>
+        <div class="label jc">Problemas</div>
+        <div class="label jc">Imagens</div>
+        <div class="label jc">Áudios</div>
+        <div class="label jc">Demarcação</div>
+        <div class="label jc">Data</div>
+      </div>
+      <div
+        class="bodytable"
+        *ngFor="let item of visitas"
+        table="true"
+        (click)="openVisit(item)"
+      >
+        <div class="label">
+          <div>
+            <div class="title">({{ item.cdcliente }}) {{ item.nmcliente }}</div>
+            <div class="sub">
+              <icon
+                height="20px"
+                width="20px"
+                icon="/assets/icons/house.png"
+              ></icon>
+              {{ item.nmpropriedade }}
+            </div>
+            <div class="sub">
+              <icon
+                height="20px"
+                width="20px"
+                icon="/assets/icons/car.png"
+              ></icon>
+              {{ item.dsveiculo }}
+            </div>
+            <div class="sub">
+              <icon
+                height="20px"
+                width="20px"
+                icon="/assets/icons/leaf.png"
+              ></icon>
+              {{ item.dscultura }}
+            </div>
+          </div>
+        </div>
+        <div class="label jc">
+          <div>
+            <div class="title">{{ item.nmvendedor }}</div>
+          </div>
+        </div>
+
+        <div class="label jc">
+          <icon
+            *ngIf="!item.idmotivo"
+            height="32px"
+            width="32px"
+            icon="/assets/icons/success.svg"
+          ></icon>
+          <icon
+            *ngIf="item.idmotivo"
+            height="32px"
+            width="32px"
+            icon="/assets/icons/fail.svg"
+          ></icon>
+          {{ item.objetivo }}
+        </div>
+        <div class="label jc">
+          <icon height="32px" width="32px" icon="/assets/icons/bug.png"></icon>
+          <span
+            *ngIf="item.dsproblema"
+            style="color: var(--color-red)"
+            [matTooltip]="item.dsrecomendacao"
+            matTooltipPosition="above"
+            >{{ item.dsproblema }}</span
+          >
+          <span *ngIf="!item.dsproblema">Sem Problemas!</span>
+        </div>
+        <div class="label jc">
+          <icon height="32px" width="32px" icon="/assets/icons/image.svg"></icon
+          >{{ item.imagens }}
+        </div>
+        <div class="label jc">
+          <icon height="32px" width="32px" icon="/assets/icons/audio.svg"></icon
+          >{{ item.audios }}
+        </div>
+        <div class="label jc" *ngIf="isDemarcado(item.demarcacaoprop)">
+          <icon height="32px" width="32px" icon="/assets/icons/locg.svg"></icon>
+          Demarcado
+        </div>
+        <div class="label jc" *ngIf="!isDemarcado(item.demarcacaoprop)">
+          <icon height="32px" width="32px" icon="/assets/icons/loc.svg"></icon
+          >Não Demarcado
+        </div>
+        <div class="label jc">{{ item.dtvisita | date: "dd/MM/yyyy" }} {{ item.horavisita}}</div>
+      </div>
+    </div>
+  </div>
+</main>
+<menu></menu>
+<spinner *ngIf="loading"></spinner>

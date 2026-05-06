@@ -1,0 +1,11 @@
+#progress {
+  background-color: var(--color-secondary-contrast);
+  height: 4px;
+  border-radius: 12px;
+  overflow: hidden;
+  .parcial {
+    background-color: var(--color-secondary);
+    height: 4px;
+    border-radius: 12px;
+  }
+}

@@ -1,0 +1,15 @@
+.filtros{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    .button{
+        height: 29px;
+    }
+}
+
+.sb{
+    justify-content: space-between !important;
+}

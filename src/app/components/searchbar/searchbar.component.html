@@ -1,0 +1,5 @@
+<section id="searchbar">
+    <div class="icon"></div>
+    <input [(ngModel)]="value" (keyup)="keyup()" [placeholder]="placeholder" [type] ="type"/>
+    <div class="iconclear" *ngIf="value" (click)="value=null; keyup()"></div>
+</section>

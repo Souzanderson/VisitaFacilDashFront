@@ -1,0 +1,80 @@
+<main id="container">
+  <div class="struct">
+    <h2>Visitas por Clientes</h2>
+    <div class="filtros">
+      <div style="width: 33%; padding: 4px">
+        <searchbar (onchange)="term = $event; instant()"></searchbar>
+      </div>
+      <div style="width: 20%" class="select">
+        <select [(ngModel)]="criter">
+          <option *ngFor="let c of criterios" [value]="c.id">
+            {{ c.label }}
+          </option>
+        </select>
+      </div>
+      <div style="width: 15%; padding: 4px">
+        <datepicker #dti placeholder="Data Inicial"></datepicker>
+      </div>
+      <div style="width: 15%; padding: 4px">
+        <datepicker #dtf placeholder="Data Final"></datepicker>
+      </div>
+    </div>
+    <div
+      class="table"
+      style="--cs: 1fr 1fr 250px 250px"
+      *ngIf="!loading"
+    >
+      <div class="toptable" table="true">
+        <div class="label" (click)="orderBy('nmcliente')">Cliente</div>
+        <div class="label" (click)="orderBy('vendedor')">Representante</div>
+        <div class="label jc" (click)="orderBy('dtultima', 'date')">
+          Última Visita
+        </div>
+        <!-- <div class="label jc" (click)="orderBy('visitas', 'number')">
+          Visitas Realizadas
+        </div> -->
+        <div class="label jc">Visitas Bem-sucedidas</div>
+      </div>
+      <div class="bodytable" *ngFor="let item of list" table="true" (click)="open(item.idcliente)">
+        <div class="label">
+          <div>
+            <div class="title">({{ item.cdcliente }}) {{ item.nmcliente }}</div>
+          </div>
+        </div>
+        <div class="label">
+          <div>
+            <div class="title">({{ item.idvendedor }}) {{ item.vendedor }}</div>
+          </div>
+        </div>
+        <div class="label jc">
+          <div>
+            <div
+              class="title dtultima"
+              [ngStyle]="{ background: checkDate(item.dtultima) }"
+            >
+              {{ item.dtultima | date: "dd/MM/yyyy" }}
+            </div>
+          </div>
+        </div>
+        <!-- <div class="label jc">
+          <div>
+            <div class="title">{{ item.visitas }}</div>
+          </div>
+        </div> -->
+        <!-- <div class="label jc">
+          <div>
+            <div class="title">{{ item.success }}</div>
+          </div>
+        </div> -->
+        <div class="label jc">
+          <span style="margin-right: 12px;">{{getPer(item) * 100}} %</span>
+          <div>
+            <progressbar [value]="getPer(item)"></progressbar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<menu></menu>
+<spinner *ngIf="loading"></spinner>

@@ -1,0 +1,164 @@
+<main id="container">
+  <div class="struct">
+    <h2>Agendamentos de Visitas</h2>
+    <div class="filtros">
+      <div style="width: 15%; padding: 4px">
+        <datepicker #dti placeholder="Data Inicial"></datepicker>
+      </div>
+      <div style="width: 15%; padding: 4px">
+        <datepicker #dtf placeholder="Data Final"></datepicker>
+      </div>
+      <div style="width: 15%; padding: 4px">
+        <div class="button" (click)="getAgendamentos()">
+          <icon
+            width="20px"
+            height="20px"
+            icon="/assets/icons/searchw.svg"
+          ></icon>
+          <span>Pesquisar</span>
+        </div>
+      </div>
+      <div style="width: 15%; padding: 4px">
+        <div class="button btorange" (click)="newAgendamento()">
+          <icon
+            width="20px"
+            height="20px"
+            icon="/assets/icons/agendamento.svg"
+          ></icon>
+          <span>Novo Agendamento</span>
+        </div>
+      </div>
+      <div style="width: 15%; padding: 4px">
+        <div class="button btprint" (click)="exportar()">
+          <icon
+            width="20px"
+            height="20px"
+            icon="/assets/icons/excel.svg"
+          ></icon>
+          <span>Exportar (xls)</span>
+        </div>
+      </div>
+    </div>
+    <div class="form">
+      <div class="table" style="--cs: 1fr 1fr 1fr" #table>
+        <div class="toptable legendtoptable" table="true">
+          <div class="label alc">Total de Agendamento: {{ list.length }}</div>
+          <div class="label alc">
+            Visitas realizadas: {{ count("realizadas", "SIM") }}
+          </div>
+          <div class="label alc">
+            Visitas pendentes: {{ count("realizadas", "NÃO") }}
+          </div>
+        </div>
+      </div>
+      <div class="table" style="--cs: 40px 1fr 1fr 1fr 150px 92px" #table>
+        <div class="toptable" table="true">
+          <div class="label sb"></div>
+          <div class="label sb">
+            <span
+              [ngStyle]="{ color: isFiltro('dsvendedor') ? 'orange' : 'white' }"
+              >Vendedor</span
+            >
+            <icon
+              width="12px"
+              height="12px"
+              icon="/assets/icons/down.svg"
+              (click)="floatMenu('dsvendedor', $event)"
+            ></icon>
+          </div>
+          <div class="label sb">
+            <span
+              [ngStyle]="{ color: isFiltro('dscliente') ? 'orange' : 'white' }"
+              >Cliente</span
+            >
+            <icon
+              width="12px"
+              height="12px"
+              icon="/assets/icons/down.svg"
+              (click)="floatMenu('dscliente', $event)"
+            ></icon>
+          </div>
+          <div class="label sb">
+            <span
+              [ngStyle]="{
+                color: isFiltro('dspropriedade') ? 'orange' : 'white'
+              }"
+              >Propriedade</span
+            >
+            <icon
+              width="12px"
+              height="12px"
+              icon="/assets/icons/down.svg"
+              (click)="floatMenu('dspropriedade', $event)"
+            ></icon>
+          </div>
+          <div class="label">
+            <span [ngStyle]="{ color: isFiltro('data') ? 'orange' : 'white' }"
+              >Data Agendam.</span
+            >
+            <icon
+              width="12px"
+              height="12px"
+              icon="/assets/icons/down.svg"
+              (click)="floatMenu('data', $event, 'date')"
+            ></icon>
+          </div>
+          <div class="label alc">
+            <span
+              [ngStyle]="{ color: isFiltro('realizadas') ? 'orange' : 'white' }"
+              >Cumprida</span
+            >
+            <icon
+              width="12px"
+              height="12px"
+              icon="/assets/icons/down.svg"
+              (click)="floatMenu('realizadas', $event, 'text')"
+            ></icon>
+          </div>
+        </div>
+        <div class="bodytable" table="true" *ngFor="let item of list">
+          <div class="label">
+            <icon
+            *ngIf="item.observacoes && item.ispropria"
+              width="20px"
+              height="20px"
+              [matTooltip]="item.observacoes" matTooltipPosition="right"
+              icon="/assets/icons/sended.svg"
+            ></icon>
+            <icon
+            *ngIf="item.observacoes && !item.ispropria"
+              width="20px"
+              height="20px"
+              [matTooltip]="item.observacoes" matTooltipPosition="right"
+              icon="/assets/icons/received.svg"
+            ></icon>
+          </div>
+          <div class="label">
+            ({{ item.iderpvendedor }}) {{ item.dsvendedor }}
+          </div>
+          <div class="label">({{ item.cdcliente }}) {{ item.dscliente }}</div>
+          <div class="label">
+            ({{ item.cdpropriedade }}) {{ item.dspropriedade }}
+          </div>
+          <div class="label">{{ item.data }}</div>
+          <div class="label alc">
+            <icon
+              width="20px"
+              height="20px"
+              icon="/assets/icons/thumbsdown.svg"
+              *ngIf="item.realizadas == 'NÃO'"
+            ></icon>
+            <icon
+              width="20px"
+              height="20px"
+              icon="/assets/icons/thumbsup.svg"
+              *ngIf="item.realizadas == 'SIM'"
+            ></icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<menu></menu>
+<spinner *ngIf="loading"></spinner>

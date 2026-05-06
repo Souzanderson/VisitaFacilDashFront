@@ -1,0 +1,74 @@
+<main id="modal">
+  <div class="header">
+    <div class="text">Adicionar Agendamento</div>
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Clique para fechar"
+      mat-dialog-close
+    >
+      close
+    </mat-icon>
+  </div>
+  <div class="form">
+    <div *ngIf="vendedores.length > 0">
+      <span>Vendedor:</span>
+      <dropsearch
+        #dropvendedor
+        width="500px"
+        placeholder="Selecionar Vendedor..."
+        keyvalue="iderp"
+        keylabel="nmvendedor"
+        (event)="getClientes($event)"
+        color="var(--color-primary)"
+      >
+      </dropsearch>
+    </div>
+    <div>
+      <span>Cliente:</span>
+      <dropsearch
+        #dropcliente
+        [disabled]="clientes.length == 0"
+        width="500px"
+        placeholder="Selecionar Cliente..."
+        keyvalue="id"
+        keylabel="nmcliente"
+        (event)="getPropriedades($event)"
+        color="var(--color-primary)"
+      >
+      </dropsearch>
+    </div>
+    <div>
+      <span>Propriedade:</span>
+      <dropsearch
+        #droppropriedade
+        [disabled]="propriedades.length == 0 && clientes.length == 0"
+        width="500px"
+        placeholder="Selecionar Propriedade..."
+        keyvalue="iderp"
+        keylabel="nmendereco"
+        color="var(--color-primary)"
+        (event)="setPropriedade($event)"
+      >
+      </dropsearch>
+    </div>
+    <div style="width: 500px">
+      <span>Data de Agendamento:</span>
+      <datepicker #dtagendamento placeholder="Data de Agendamento"></datepicker>
+    </div>
+    <div>
+      <div class="span">Observações:</div>
+      <textarea rows="4" [(ngModel)]="agendamento.observacoes"></textarea>
+    </div>
+
+    <br />
+    <inlinespin *ngIf="loading"></inlinespin>
+  </div>
+  <div
+    class="button"
+    [ngClass]="{ btloading: loading }"
+    (click)="sendAgendamento()"
+  >
+    <span *ngIf="!loading">Enviar Agendamento</span>
+    <span *ngIf="loading">Carregando...</span>
+  </div>
+</main>

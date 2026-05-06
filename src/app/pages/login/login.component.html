@@ -1,0 +1,53 @@
+<main id="login">
+  <div class="login">
+    <div class="formlogin">
+      <icon
+        icon="/assets/images/agrodadoscube.svg"
+        height="280px"
+        width="280px"
+      ></icon>
+      <br />
+      <br />
+      <br />
+      <br />
+      <!-- <icon icon="/assets/images/dash.png" height="30px" width="100vw"></icon> -->
+      <!-- <div class="title">
+            Visita Fácil<br>DASHBOARD
+        </div> -->
+      <br />
+      <div class="inputlogin">
+        <icon
+          icon="/assets/icons/user_login.svg"
+          height="20px"
+          width="20px"
+        ></icon>
+        <input [(ngModel)]="user" placeholder="Usuário" />
+      </div>
+      <br />
+      <div class="inputlogin">
+        <icon
+          icon="/assets/icons/pass_login.svg"
+          height="20px"
+          width="20px"
+        ></icon>
+        <input
+          [(ngModel)]="pass"
+          placeholder="Senha"
+          type="password"
+          (keyup.enter)="login()"
+        />
+      </div>
+      <br />
+      <br />
+      <div
+        class="button btlg"
+        style="height: 28px; width: 100%"
+        (click)="login()"
+      >
+        Entrar
+      </div>
+    </div>
+  </div>
+  <div class="version">Versão: 1.2.3</div>
+</main>
+<spinner *ngIf="loading" message="Entrando..."></spinner>

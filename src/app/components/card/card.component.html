@@ -1,0 +1,22 @@
+<section id="card">
+  <div
+    #card
+    class="card"
+    [style.height]="height"
+    [style.width]="width"
+    [style.margin]="margin"
+    [style.maxWidth]="maxwidth"
+    [style.background]="background"
+    [style.color]="color"
+    [style.minWidth]="minwidth"
+    [style.overflow]="overflow"
+  >
+    <div class="card_title" *ngIf="title">
+      <div class="text_card_title">{{ title }}</div>
+      <div class="icon_card_title" (click)="collapse()" *ngIf="iscollapse" [ngStyle]="{'transform': collapsed ? 'rotate(0)' : 'rotate(180deg)'}">V</div>
+    </div>
+    <div class="card_body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</section>

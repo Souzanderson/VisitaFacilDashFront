@@ -1,0 +1,42 @@
+#card {
+  font-family: Poppins, Roboto, 'Courier New', Courier, monospace;
+  .card {
+    // border-radius: 0 21px 0 21px;
+    border-radius: 3px;
+    padding: 12px;
+    margin: 4px;
+    box-shadow: 2px 2px 5px rgba(102, 102, 102, 0.432);
+    background-color: var(--color-primary-contrast);
+    overflow: auto;
+    transition: all 0.5s;
+  }
+  .card_body{
+    width: inherit;
+    height: inherit;
+  }
+  .card_title {
+    font-weight: lighter;
+    color: #fff;
+    font-size: 16px;
+    background: var(--color-secondary);
+    padding: 8px;
+    margin: -12px;
+    text-align: center;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    .text_card_title{
+      width: 100%;
+    }
+    .icon_card_title{
+      width: 50px;
+      font-weight: bold;
+      // transform: rotate(180deg);
+      cursor: pointer;
+    }
+  }
+}

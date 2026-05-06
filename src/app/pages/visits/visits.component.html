@@ -1,0 +1,328 @@
+<main id="container">
+  <div class="struct">
+    <h2>Diário de Visitas</h2>
+    <!-- <div class="search" *ngFor="let f of filters; let i = index">
+      <div style="width: 43%; padding: 4px">
+        <searchbar (onchange)="f.search = $event"></searchbar>
+      </div>
+      <div style="width: 18%" class="select">
+        <select [(ngModel)]="f.criter">
+          <option
+            *ngFor="let c of criterios"
+            [value]="c.id"
+            placeholder="teste"
+          >
+            {{ c.label }}
+          </option>
+        </select>
+      </div>
+      <div class="add">
+        <icon
+          icon="/assets/icons/rm.png"
+          width="34px"
+          height="34px"
+          (click)="rmFilter(f.idx)"
+          *ngIf="filters.length > 1"
+        ></icon>
+        <icon
+          icon="/assets/icons/add.png"
+          width="40px"
+          height="40px"
+          (click)="addFilter()"
+          *ngIf="i == filters.length - 1 && filters.length < criterios.length"
+        ></icon>
+      </div>
+    </div> -->
+    <div class="search" *ngIf="visitas.length == 0">
+      <div style="width: 20%; padding: 4px">
+        <datepicker #dti placeholder="Data Inicial"></datepicker>
+      </div>
+      <div style="width: 20%; padding: 4px">
+        <datepicker #dtf placeholder="Data Final"></datepicker>
+      </div>
+      <div class="button" style="width: 20%" (click)="pesquisar()">
+        Pesquisar
+      </div>
+    </div>
+    <br />
+    <div
+      class="table tablestl"
+      style="--cs: repeat(5, 1fr) 150px"
+      *ngIf="!loading && visitas.length == 0"
+      #table
+    >
+      <div class="toptable" table="true">
+        <div class="label labeltablefilter">
+          <span
+            [ngStyle]="{ color: isFiltro('nmvendedor') ? 'orange' : 'white' }"
+            >Vendedor</span
+          >
+          <icon
+            width="12px"
+            height="12px"
+            icon="/assets/icons/down.svg"
+            (click)="floatMenu('nmvendedor', $event)"
+          ></icon>
+        </div>
+        <div class="label labeltablefilter">
+          <span
+            [ngStyle]="{ color: isFiltro('dsveiculo') ? 'orange' : 'white' }"
+            >Veículo</span
+          >
+          <icon
+            width="12px"
+            height="12px"
+            icon="/assets/icons/down.svg"
+            (click)="floatMenu('dsveiculo', $event)"
+          ></icon>
+        </div>
+        <div class="label labeltablefilter">
+          <span [ngStyle]="{ color: isFiltro('dtgrupo') ? 'orange' : 'white' }"
+            >Data Abertura</span
+          >
+          <icon
+            width="12px"
+            height="12px"
+            icon="/assets/icons/down.svg"
+            (click)="floatMenu('dtgrupo', $event, 'date')"
+          ></icon>
+        </div>
+        <div class="label labeltablefilter">
+          <span
+            [ngStyle]="{ color: isFiltro('dtfechamento') ? 'orange' : 'white' }"
+            >Data Fechamento</span
+          >
+          <icon
+            width="12px"
+            height="12px"
+            icon="/assets/icons/down.svg"
+            (click)="floatMenu('dtfechamento', $event, 'date')"
+          ></icon>
+        </div>
+        <div class="label labeltablefilter">
+          <span class="c" [ngStyle]="{ color: isFiltro('kmtotal') ? 'orange' : 'white' }"
+            >Distância (km)</span
+          >
+          <icon
+            width="12px"
+            height="12px"
+            icon="/assets/icons/down.svg"
+            (click)="floatMenu('kmtotal', $event, 'number')"
+          ></icon>
+        </div>
+        <div class="label labeltablefilter">
+          <span class="c" [ngStyle]="{ color: isFiltro('qtdvisitas') ? 'orange' : 'white' }"
+            >Visitas</span
+          >
+          <icon
+            width="12px"
+            height="12px"
+            icon="/assets/icons/down.svg"
+            (click)="floatMenu('qtdvisitas', $event, 'number')"
+          ></icon>
+        </div>
+      </div>
+      <div
+        class="bodytable"
+        *ngFor="let item of groups"
+        table="true"
+        (click)="open(item)"
+      >
+        <div class="label" *ngIf="item.iderpvendedor">
+          ({{ item.iderpvendedor }}) {{ item.nmvendedor }}
+        </div>
+        <div class="label">{{ item.dsveiculo }}</div>
+        <div class="label jc" *ngIf="!item.iderpvendedor">
+          Vendedor não identificado
+        </div>
+        <div class="label">
+          {{ item.dtgrupo | date: "dd/MM/YYYY HH:mm" }}
+        </div>
+        <div class="label">
+          {{ item.dtfechamento | date: "dd/MM/YYYY HH:mm" }}
+        </div>
+        <div class="label jc">{{ item.kmtotal }}</div>
+        <div class="label jc">{{ item.qtdvisitas }}</div>
+      </div>
+    </div>
+
+    <!-- VISITAS -->
+    <div *ngIf="!loading && visitas.length > 0">
+      <div class="chip" (click)="clear()">
+        <icon height="20px" width="20px" icon="/assets/icons/back.svg"></icon>
+        {{ selected.dsveiculo }} | Distância Informada: {{ getKM(selected) }} km
+        | Distância Estimada: {{ realdistance }} km | Vendedor:
+        {{ selected.nmvendedor }} | Abertura:
+        {{ selected.dtgrupo | date: "dd/MM/YYYY HH:mm" }} | Fechamento:
+        {{ selected.dtfechamento | date: "dd/MM/YYYY HH:mm" }}
+      </div>
+      <br />
+      <div table="true" style="--cs: 1fr 1fr">
+        <card
+          iscollapse="true"
+          height="80vh"
+          margin="8px"
+          title="Distância Estimada Entre Visitas (Geolocalização)"
+        >
+          <timelinechart
+            [data]="getDistances()"
+            (finish)="createLegend($event)"
+            height="70%"
+          ></timelinechart>
+          <div class="chartlegend" *ngIf="legends">
+            <div
+              class="itemlegend"
+              *ngFor="let l of legends"
+              [ngStyle]="{ background: l.color }"
+            >
+              <div class="lg">
+                {{ l.legend }}
+              </div>
+              <div class="pos">{{ kmByPercent(l.pos) }}</div>
+            </div>
+          </div>
+        </card>
+        <card
+          iscollapse="true"
+          margin="8px"
+          height="80vh"
+          title="Rota Estimada Entre Visitas (Trajeto)"
+        >
+          <mapscomp
+            (getdistance)="realdistance = $event"
+            *ngIf="showmap"
+            width="100%"
+            height="95%"
+            [typemap]="roadmap"
+            [center]="center"
+            [marks]="marks"
+            [colors]="colors"
+            [zoom]="10"
+          ></mapscomp>
+        </card>
+      </div>
+      <br />
+    </div>
+    <div
+      class="table"
+      style="--cs: 50px 2fr 1fr repeat(7, 140px)"
+      *ngIf="!loading && visitas.length > 0"
+    >
+      <div class="toptable" table="true">
+        <div class="label">Cód.</div>
+        <div class="label">Detalhes</div>
+        <div class="label jc">Vendedor</div>
+        <div class="label jc">Objetivo</div>
+        <div class="label jc">Problemas</div>
+        <div class="label jc">Imagens</div>
+        <div class="label jc">Áudios</div>
+        <div class="label jc">Demarcação</div>
+        <!-- <div class="label jc">Distância</div> -->
+        <div class="label jc">Data</div>
+        <div class="label jc">Hora</div>
+      </div>
+      <div
+        class="bodytable"
+        *ngFor="let item of visitas; let i = index"
+        table="true"
+        (click)="openVisit(item)"
+      >
+        <div class="label">
+          <div class="minichip">
+            {{ i + 1 }}
+          </div>
+        </div>
+        <div class="label">
+          <div>
+            <div class="title">({{ item.cdcliente }}) {{ item.nmcliente }}</div>
+            <div class="sub">
+              <icon
+                height="20px"
+                width="20px"
+                icon="/assets/icons/house.png"
+              ></icon>
+              {{ item.nmpropriedade }}
+            </div>
+            <div class="sub">
+              <icon
+                height="20px"
+                width="20px"
+                icon="/assets/icons/car.png"
+              ></icon>
+              {{ item.dsveiculo }}
+            </div>
+            <div class="sub">
+              <icon
+                height="20px"
+                width="20px"
+                icon="/assets/icons/leaf.png"
+              ></icon>
+              {{ item.dscultura }}
+            </div>
+            <div class="sub" *ngIf="item.dsevento">
+              <icon
+                height="20px"
+                width="20px"
+                icon="/assets/icons/calendar.svg"
+              ></icon>
+              {{ item.dsevento }}
+            </div>
+          </div>
+        </div>
+        <div class="label jc">
+          <div>
+            <div class="title">{{ item.nmvendedor }}</div>
+          </div>
+        </div>
+
+        <div class="label jc">
+          <icon
+            *ngIf="!item.idmotivo"
+            height="32px"
+            width="32px"
+            icon="/assets/icons/success.svg"
+          ></icon>
+          <icon
+            *ngIf="item.idmotivo"
+            height="32px"
+            width="32px"
+            icon="/assets/icons/fail.svg"
+          ></icon>
+          {{ item.objetivo }}
+        </div>
+        <div class="label jc">
+          <icon height="32px" width="32px" icon="/assets/icons/bug.png"></icon>
+          <span
+            *ngIf="item.dsproblema"
+            style="color: var(--color-red)"
+            [matTooltip]="item.dsrecomendacao"
+            matTooltipPosition="above"
+            >{{ item.dsproblema }}</span
+          >
+          <span *ngIf="!item.dsproblema">Sem Problemas!</span>
+        </div>
+        <div class="label jc">
+          <icon height="32px" width="32px" icon="/assets/icons/image.svg"></icon
+          >{{ item.imagens }}
+        </div>
+        <div class="label jc">
+          <icon height="32px" width="32px" icon="/assets/icons/audio.svg"></icon
+          >{{ item.audios }}
+        </div>
+        <div class="label jc" *ngIf="isDemarcado(item.demarcacaoprop)">
+          <icon height="32px" width="32px" icon="/assets/icons/locg.svg"></icon>
+          Demarcado
+        </div>
+        <div class="label jc" *ngIf="!isDemarcado(item.demarcacaoprop)">
+          <icon height="32px" width="32px" icon="/assets/icons/loc.svg"></icon
+          >Não Demarcado
+        </div>
+        <!-- <div class="label jc">{{ item.kminicial }}/{{ item.kmfinal }}</div> -->
+        <div class="label jc">{{ item.dtvisita | date: "dd/MM/yyyy" }}</div>
+        <div class="label jc">{{ item.horavisita }}</div>
+      </div>
+    </div>
+  </div>
+</main>
+<menu></menu>
+<spinner *ngIf="loading"></spinner>

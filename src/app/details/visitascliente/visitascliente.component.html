@@ -1,0 +1,396 @@
+<main id="container">
+  <div class="struct">
+    <h2>Detalhamento de Visitas por Cliente</h2>
+    <div class="formfilters">
+      <div class="filtros" style="--cs: 1fr 1fr 300px">
+        <div class="item">
+          <datepicker #dti placeholder="Data Inicial"></datepicker>
+        </div>
+        <div class="item">
+          <datepicker #dtf placeholder="Data Final"></datepicker>
+        </div>
+        <div class="item">
+          <div class="button" (click)="search()">Pesquisar</div>
+        </div>
+      </div>
+      <div class="filtros" style="--cs: 1fr 300px">
+        <div class="item">
+          <dropsearch
+            #dropevento
+            width="1fr"
+            placeholder="Selecione um Evento para filtrar..."
+            keyvalue="id"
+            keylabel="dsevento"
+            (event)="evento = $event; instant()"
+            color="var(--color-primary)"
+          >
+          </dropsearch>
+        </div>
+        <div class="item">
+          <div class="button btprint" (click)="report()">Imprimir</div>
+        </div>
+      </div>
+      <div class="filtros" style="--cs: 300px 1fr">
+        <div class="item">
+          <select [(ngModel)]="distopt">
+            <option value="maior">Maior que</option>
+            <option value="menor">Menor que</option>
+            <option value="igual">Igual a</option>
+          </select>
+        </div>
+        <div class="item">
+          <searchbar
+            placeholder="Distância (km)"
+            (onchange)="distance = $event"
+            type="number"
+          >
+          </searchbar>
+        </div>
+      </div>
+    </div>
+    <div class="form" *ngIf="!loading">
+      <!-- APENAS PARA IMPRESSÃO -->
+      <div class="table print">
+        <div class="toptable table-3">
+          <div class="label">Cliente</div>
+          <div class="label">Vendedor</div>
+          <div class="label">Última Visita</div>
+        </div>
+        <div class="bodytable table-3">
+          <div class="label">
+            <div class="title">{{ cliente.nmcliente }}</div>
+          </div>
+          <div class="label">
+            <div class="title">{{ cliente.vendedor }}</div>
+          </div>
+          <div class="label">
+            <div class="title">{{ cliente.dtultima | date: "dd/MM/YYYY" }}</div>
+          </div>
+        </div>
+      </div>
+      <!-- ----------- -->
+
+      <div
+        class="charts noprint"
+        style="flex-wrap: wrap !important"
+        *ngIf="!loading"
+      >
+        <card
+          height="50vh"
+          margin="8px"
+          background="var(--color-secondary)"
+          color="var(--color-grey)"
+        >
+          <div class="cd">
+            <div class="title">Cliente</div>
+            <div class="name">{{ cliente.nmcliente }}</div>
+          </div>
+          <div class="cd">
+            <div class="title">Representante</div>
+            <div class="name">{{ cliente.vendedor }}</div>
+          </div>
+          <div class="infos rdc">
+            <div class="panel">
+              <span class="data">{{ visitas.length }}</span>
+              <span class="label">Visitas Recebidas</span>
+            </div>
+            <div class="panel">
+              <span class="data">{{ cliente.pedidos }}</span>
+              <span class="label">Pedidos Fácil App</span>
+            </div>
+            <div class="panel">
+              <span class="data">{{
+                cliente.dtultima | date: "dd/MM/YYYY"
+              }}</span>
+              <span class="label">Última Visita</span>
+            </div>
+          </div>
+        </card>
+        <card height="50vh" margin="8px" *ngIf="statistics.length > 0" title="Objetivos">
+          <barchart
+            [data]="statistics"
+            xlabel="label"
+            ylabel="value"
+          ></barchart>
+        </card>
+        <card height="50vh" margin="8px" *ngIf="statistics.length > 0" title="Formas de Contato">
+          <!-- <barchart [data]="statisticsformas" xlabel="label" ylabel="value" [id]="'formacontatochart'"></barchart> -->
+          <piechart
+            [data]="statisticsformas"
+            [id]="'formacontatochart'"
+            legendpos="right"
+          ></piechart>
+        </card>
+        <card height="50vh" margin="8px" *ngIf="statistics.length > 0" title="Situação das Visitas">
+          <piechart [data]="sectors"></piechart>
+        </card>
+      </div>
+      <br />
+      <div *ngFor="let item of visitas; let i = index">
+        <div class="table">
+          <div class="toptable mg4">
+            <div class="label">DETALHES</div>
+          </div>
+          <div class="items" table="true" style="--cs: 1fr 1fr 1fr">
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/date.svg"
+                  ></icon>
+                  Data Visita
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">
+                  {{ item.dtvisita | date: "dd/MM/YYYY" }}
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/leaf.png"
+                  ></icon>
+                  Cultura
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">{{ item.dscultura }}</div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/calendar.svg"
+                  ></icon>
+                  Evento
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">{{ item.dsevento }}</div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/bug.png"
+                  ></icon>
+                  Problema/Recomendação
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">
+                  {{ item.dsproblema }} <br />
+                  {{ item.dsrecomendacao }}
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/locg.svg"
+                  ></icon>
+                  Distância (Prop. / Visita)
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">{{ getDist(item) }}</div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/house.png"
+                  ></icon>
+                  Endereço Completo
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">
+                  {{ item.enderecocompleto.endereco }},
+                  {{ item.enderecocompleto.numero }} -
+                  {{ item.enderecocompleto.bairro }} | CEP
+                  {{ item.enderecocompleto.cep }}
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/mapa.png"
+                  ></icon>
+                  Localização Propriedade
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">
+                  latitude: {{ item.enderecocompleto.latitude }} | longitude:
+                  {{ item.enderecocompleto.longitude }}
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/carmarker.png"
+                  ></icon>
+                  Localização Visita (Abertura)
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">
+                  latitude: {{ item.latitudeoriginal }} | longitude:
+                  {{ item.longitudeoriginal }}
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="toptable">
+                <div class="label">
+                  <icon
+                    height="20px"
+                    width="20px"
+                    icon="/assets/icons/mic.svg"
+                  ></icon>
+                  Áudios
+                </div>
+              </div>
+              <div class="bodytable">
+                <div class="label">
+                  <audio
+                    controls="controls"
+                    style="width: 100%; height: 25px"
+                    *ngIf="item.audios ? item.audios.length > 0 : false"
+                  >
+                    <source [src]="item.audios[0].linkaudio" type="audio/ogg" />
+                  </audio>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="toptable mg4">
+            <div class="label">LOCALIZAÇÃO</div>
+          </div>
+
+          <div
+            class="bodytable noprint"
+            table="true"
+            style="
+              align-content: space-around;
+              grid-template-columns: 1fr 1fr 1fr;
+              margin: 4px;
+            "
+          >
+            <card
+              width="inherit"
+              height="23vw"
+              margin="8px"
+              title="Localização da Propriedade"
+              *ngIf="
+                item.enderecocompleto
+                  ? item.enderecocompleto.latitude &&
+                    item.enderecocompleto.longitude
+                  : false
+              "
+            >
+              <mapscomp
+                [id]="'mapprop' + i"
+                width="100%"
+                height="20vw"
+                [zoom]="10"
+                [location]="
+                  getPropLocation(
+                    item.enderecocompleto.latitude,
+                    item.enderecocompleto.longitude
+                  )
+                "
+                icon="/assets/icons/homemarker.png"
+              ></mapscomp>
+            </card>
+            <card
+              width="inherit"
+              margin="8px"
+              height="23vw"
+              title="Posição de Abertura da Visita"
+              *ngIf="item.latitudeoriginal && item.longitudeoriginal"
+            >
+              <mapscomp
+                width="100%"
+                height="20vw"
+                [zoom]="10"
+                [id]="'mapvisita' + i"
+                [location]="
+                  getPropLocation(item.latitudeoriginal, item.longitudeoriginal)
+                "
+                icon="/assets/icons/carmarker.svg"
+              ></mapscomp>
+            </card>
+            <card
+              width="inherit"
+              height="23vw"
+              margin="8px"
+              *ngIf="item.demarcacaoprop"
+              title="Demarcação da Visita"
+            >
+              <mapscomp
+                width="100%"
+                height="20vw"
+                [zoom]="15"
+                [id]="'demarcacao' + i"
+                [location]="item.demarcacaoprop.position"
+                [demarcacao]="item.demarcacaoprop.locations"
+              ></mapscomp>
+            </card>
+          </div>
+          <div class="toptable mg4" *ngIf="item.imagens">
+            <div class="label">IMAGENS</div>
+          </div>
+          <div
+            class="bodytable justify noprint"
+            *ngIf="item.imagens"
+            style="margin: 4px"
+          >
+            <div class="image" *ngFor="let img of item.imagens">
+              <img [src]="img.linkimg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<menu></menu>
+<spinner *ngIf="loading"></spinner>

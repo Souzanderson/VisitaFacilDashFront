@@ -1,0 +1,25 @@
+#chart {
+  width: auto;
+  height: 98%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: stretch;
+  .chartdiv {
+    width: 100%;
+    height: auto;
+  }
+  .legend {
+    width: 300px;
+    height: auto;
+	display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+	font-size: 10px;
+    text-transform: uppercase;
+  }
+}

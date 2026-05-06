@@ -1,0 +1,149 @@
+<main id="container">
+  <div class="struct" *ngIf="!loading">
+    <!-- <h2>Visitas Realizadas</h2> -->
+    <div class="charts">
+      <card
+        height="50vh"
+        *ngIf="statistics.length > 0"
+        title="Visitas Diárias"
+        margin="20px"
+        >
+        <linechart [data]="statistics"></linechart>
+      </card>
+      <card
+        height="50vh"
+        *ngIf="statistics.length > 0"
+        title="Visitas Mensais"
+        margin="20px"
+        >
+        <barchart
+          [data]="visitsbyper"
+          xlabel="periodo"
+          ylabel="visitas"
+        ></barchart>
+      </card>
+    </div>
+    <h2>Resumo por Vendedor</h2>
+    <div class="search" style="display: flex; align-items: center">
+      <div style="width: 30%; padding: 4px">
+        <searchbar
+          #shc
+          placeholder="Pesquisar vendedor..."
+          (onchange)="term = $event; search()"
+        ></searchbar>
+      </div>
+      <div style="width: 20%; padding: 4px">
+        <datepicker #dti placeholder="Data Inicial"></datepicker>
+      </div>
+      <div style="width: 20%; padding: 4px">
+        <datepicker #dtf placeholder="Data Final"></datepicker>
+      </div>
+      <div class="checkbox">
+        <input
+          type="checkbox"
+          id="scales"
+          name="scales"
+          [(ngModel)]="notvisit"
+          (change)="search(null)"
+        />
+        <label for="scales" class="noselect"
+          >Exibir Vendedor sem visitas?</label
+        >
+      </div>
+      <div style="width: 15%; padding: 4px">
+        <div
+          class="button"
+          style="width: auto; height: 26px"
+          (click)="searchWs()"
+        >
+          Pesquisar
+        </div>
+      </div>
+    </div>
+    <div class="sellers" table="true" *ngIf="dtf.value">
+      <card
+        *ngFor="let vendedor of vendedores"
+        [title]="'(' + vendedor.iderp + ') ' + vendedor.nmvendedor"
+        (click)="goVendedor(vendedor.id)"
+        margin="4px"
+        >
+        <div class="seller" table="true" style="--cs: 1fr">
+          <!-- <div class="c-div">
+            <icon
+              icon="/assets/icons/sale.png"
+              height="70px"
+              width="70px"
+            ></icon>
+          </div> -->
+          <div class="details">
+            <!-- <div class="name">
+              ({{ vendedor.iderp }}) {{ vendedor.nmvendedor }}
+            </div>
+            <br /> -->
+            <div class="dts">
+              <div class="vendas rdc">
+                <icon
+                  icon="/assets/icons/clientactive.svg"
+                  height="20px"
+                  width="20px"
+                ></icon
+                >Clientes Ativos: {{ vendedor.clientes }}
+              </div>
+              <div class="duo">
+                <div class="vendas rdc">
+                  <icon
+                    icon="/assets/icons/location.svg"
+                    height="20px"
+                    width="20px"
+                  ></icon
+                  >Distância Percorrida: {{ vendedor.kmtotal+' km' }}
+                </div>
+                <span class="average">
+                  Media diária:
+                  {{ getAverage(vendedor.kmtotal) }} km
+                </span>
+              </div>
+              <div class="duo">
+                <div class="vendas rdc">
+                  <icon
+                    icon="/assets/icons/client2.svg"
+                    height="20px"
+                    width="20px"
+                  ></icon
+                  >Clientes Contactados: {{ vendedor.clientesvisitados }}
+                </div>
+                <span class="average">
+                  Media diária:
+                  {{ getAverage(vendedor.clientesvisitados) }} cliente(s)
+                </span>
+              </div>
+              <div class="duo">
+                <div class="visitas rdc">
+                  <icon
+                    icon="/assets/icons/talk.svg"
+                    height="20px"
+                    width="20px"
+                  ></icon
+                  >Contatos: {{ vendedor.visitas }}
+                </div>
+                <span class="average">
+                  Media diária: {{ getAverage(vendedor.visitas) }} contato(s)
+                </span>
+              </div>
+              <div class="visitas rdc">
+                <icon
+                  icon="/assets/icons/talksuccess.svg"
+                  height="20px"
+                  width="20px"
+                ></icon
+                >Contatos com sucesso: {{ vendedor.sucessovisitas }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</main>
+<menu></menu>
+<spinner *ngIf="loading"></spinner>

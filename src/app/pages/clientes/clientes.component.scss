@@ -1,0 +1,15 @@
+.dtultima {
+  padding: 4px;
+  border-radius: 6px;
+  background-color: rgb(10, 231, 10);
+}
+
+.filtros {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 12px;
+}

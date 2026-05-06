@@ -1,0 +1,269 @@
+<main id="modal">
+  <div class="header">
+    <div class="text">Detalhes da Visita</div>
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Clique para fechar"
+      mat-dialog-close
+    >
+      close
+    </mat-icon>
+  </div>
+  <div class="form">
+    <!-- DETALHES DA VISITA -->
+    <div class="table">
+      <div class="item">
+        <div class="toptable">
+          <div class="label fc">Detalhes da Visita</div>
+        </div>
+      </div>
+    </div>
+    <div class="table" *ngIf="data" table="true" style="--cs: 1fr 1fr">
+      <div class="item">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/vendorgreen.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Vendedor</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <div class="label">
+            {{ data.nmvendedor }}
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/car.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Veículo</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <div class="label">
+            {{ data.dsveiculo }}
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/userorange.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Cliente</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <div class="label">
+            {{ data.nmcliente }}
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/date.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Data/Hora</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <div class="label">{{ data.dtvisita | date: "dd/MM/y"}} {{ data.horavisita }}</div>
+        </div>
+      </div>
+
+      <div class="item" *ngIf="audios.length > 0">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/mic.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Áudios</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <inlinespin *ngIf="loading"></inlinespin>
+          <div class="label" *ngIf="!loading">
+            <audio controls="controls" style="width: 100%">
+              <source [src]="audios[0].linkaudio" type="audio/ogg" />
+            </audio>
+          </div>
+        </div>
+      </div>
+
+      <div class="item" *ngIf="data.observacao">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/details.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Observações</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <div class="label">{{ data.observacao }}</div>
+        </div>
+      </div>
+
+      <div class="item" *ngIf="data.nmcontato">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/comquemfalei.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Com quem falei</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <div class="label">{{ data.nmcontato }}</div>
+        </div>
+      </div>
+
+      <div class="item" *ngIf="data.dsevento">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/event.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Evento</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <div class="label">{{ data.dsevento }}</div>
+        </div>
+      </div>
+
+      <div class="item" *ngIf="data.dtfimatividade">
+        <div class="toptable">
+          <div class="label">
+            <icon
+              icon="/assets/icons/datereturn.svg"
+              height="26px"
+              width="26px"
+              margin="0"
+            ></icon>
+            <span>Data de Retorno</span>
+          </div>
+        </div>
+        <div class="bodytable">
+          <div class="label">{{ data.dtfimatividade | date : "dd/MM/y" }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEMARCAÇÕES -->
+    <div class="demarcacaoes" *ngIf="isDemarcado(data.demarcacaoprop)">
+      <div class="table">
+        <div class="item">
+          <div class="toptable">
+            <div class="label fc">Dados Geográficos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table" *ngIf="data" table="true" style="--cs: 1fr 1fr">
+        <div class="item">
+          <div class="toptable">
+            <div class="label">
+              <!-- <icon
+                icon="/assets/icons/vendorgreen.svg"
+                height="26px"
+                width="26px"
+                margin="0"
+              ></icon> -->
+              <span>Demarcação da Propriedade</span>
+            </div>
+          </div>
+          <div class="bodytable">
+            <div class="label">
+              <mapscomp
+                width="36vw"
+                height="36vw"
+                [zoom]="15"
+                [id]="'demarcacaoprop'"
+                [location]="demarcacao.position"
+                [demarcacao]="demarcacao.locations"
+              ></mapscomp>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="toptable">
+            <div class="label">
+              <!-- <icon
+                icon="/assets/icons/vendorgreen.svg"
+                height="26px"
+                width="26px"
+                margin="0"
+              ></icon> -->
+              <span>Localização da Visita</span>
+            </div>
+          </div>
+          <div class="bodytable">
+            <div class="label">
+              <mapscomp
+                width="36vw"
+                height="36vw"
+                [zoom]="10"
+                [id]="'mapvisita'"
+                [location]="
+                  getPropLocation(data.latitudeoriginal, data.longitudeoriginal)
+                "
+                icon="/assets/icons/carmarker.svg"
+              ></mapscomp>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMAGENS -->
+    <div class="imagens" *ngIf="data.imagens > 0">
+      <div class="table">
+        <div class="item">
+          <div class="toptable">
+            <div class="label fc">Imagens</div>
+          </div>
+        </div>
+        <div class="bodytable bodyimage">
+          <inlinespin *ngIf="loading"></inlinespin>
+          <div *ngFor="let img of imagens">
+            <div class="image" *ngIf="!loading">
+              <img [src]="img.linkimg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

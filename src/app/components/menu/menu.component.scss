@@ -1,0 +1,118 @@
+#menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--gap);
+  height: 100vh;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 1) 0%,
+    var(--color-primary) 60%,
+    #034a6e 100%
+  );
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 8px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 12px;
+
+  .brand-name {
+    color: var(--color-primary-contrast);
+    font-family: Poppins, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+}
+
+.nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.18s ease;
+  user-select: none;
+
+  .nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    opacity: 0.75;
+  }
+
+  .nav-label {
+    color: rgba(255, 255, 255, 0.75);
+    font-family: Poppins, sans-serif;
+    font-size: 12.5px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+
+    .nav-label {
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .nav-icon {
+      opacity: 1;
+    }
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.18);
+    border-left: 3px solid var(--color-secondary-contrast);
+    padding-left: 7px;
+
+    .nav-label {
+      color: var(--color-primary-contrast);
+      font-weight: bold;
+    }
+
+    .nav-icon {
+      opacity: 1;
+    }
+  }
+}
+
+.logout {
+  margin-bottom: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 12px;
+  margin-top: 4px;
+  border-radius: 0;
+
+  &:hover {
+    background: rgba(202, 17, 17, 0.25);
+    border-radius: 8px;
+  }
+}

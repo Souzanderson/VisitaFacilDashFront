@@ -1,0 +1,126 @@
+.cd {
+  padding: 20px;
+  .title {
+    color: #cccccc;
+    font-size: 13px;
+    font-weight: 300;
+  }
+  .name {
+    color: rgba(255, 255, 255, 0.904);
+    font-weight: 400;
+    font-size: x-large;
+    padding-top: 8px;
+  }
+}
+
+.mg4 {
+  margin: 4px;
+  .label {
+    justify-content: space-evenly !important;
+  }
+}
+
+.items {
+  .item {
+    margin: 4px;
+  }
+  .bodytable {
+    min-height: 50px;
+  }
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.formfilters{
+  margin: 20px;
+  .filtros {
+    display: grid;
+    grid-template-columns: var(--cs, 1fr);
+    width: 58vw;
+    transition: all 1s;
+    .item{
+      margin: 2px;
+    }
+  }
+}
+
+.infos {
+  margin-top: 10vh;
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: space-around;
+  justify-content: space-around;
+  align-items: center;
+  .data {
+    font-size: xx-large;
+    color: white;
+    padding: 12px;
+    font-weight: 500;
+  }
+  .label {
+    padding: 8px;
+    color: #cccccc;
+    font-weight: 300;
+  }
+}
+
+.justify {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: space-around;
+  align-items: center;
+}
+
+.image {
+  width: 300px;
+  height: auto;
+  padding: 8px;
+  img {
+    width: 300px;
+    height: auto;
+  }
+}
+
+.column {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+}
+
+.mapitem {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: space-around;
+  justify-content: space-around;
+  align-items: center;
+  .labelmap {
+    font-size: 14px;
+    font-weight: 400;
+    padding-bottom: 8px;
+    /* border-bottom: 1px solid; */
+    /* margin-bottom: 2px; */
+    color: var(--color-secondary);
+  }
+}
+
+.table{
+  .bodytable, .bodyimage{
+    .label:hover{
+      background: var(--color-primary-contrast) !important;
+    }
+  }
+  .bodytable,
+  .bodyimage:hover {
+    background: var(--color-primary-contrast) !important;
+  }
+}

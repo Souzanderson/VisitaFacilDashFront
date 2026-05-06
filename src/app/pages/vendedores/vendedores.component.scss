@@ -1,0 +1,47 @@
+.dtultima {
+  padding: 4px;
+  border-radius: 6px;
+  background-color: rgb(10, 231, 10);
+}
+
+.checkbox {
+  width: 200px;
+  text-align: center;
+  font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 1px 1px 5px 0px #00000033;
+  font-weight: lighter;
+  height: 40px;
+  margin: 3px;
+  padding-left: 8px;
+}
+
+.chip {
+  background: var(--color-red);
+  padding: 4px;
+  font-size: 12px;
+  color: #fff;
+  font-weight: lighter;
+  width: fit-content;
+  border-radius: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  cursor: pointer;
+  icon{
+    padding-right: 12px;
+  }
+}
+.chip:hover{
+  background: var(--color-red-light);
+}

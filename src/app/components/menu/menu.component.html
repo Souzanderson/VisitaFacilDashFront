@@ -1,0 +1,31 @@
+<section id="menu">
+  <div class="sidebar">
+
+    <div class="brand">
+      <icon icon="/assets/images/agrodadoscubew.svg" height="36px" width="36px"></icon>
+      <span class="brand-name">Agrodados</span>
+    </div>
+
+    <nav class="nav-items">
+      <div
+        class="nav-item"
+        *ngFor="let item of items"
+        [ngClass]="{ active: item.route == getroute() }"
+        (click)="go(item.id)"
+      >
+        <div class="nav-icon">
+          <icon [icon]="item.icon" height="20px" width="20px"></icon>
+        </div>
+        <span class="nav-label">{{ item.label }}</span>
+      </div>
+    </nav>
+
+    <div class="nav-item logout" (click)="close()">
+      <div class="nav-icon">
+        <icon icon="/assets/icons/close.svg" height="20px" width="20px"></icon>
+      </div>
+      <span class="nav-label">Sair</span>
+    </div>
+
+  </div>
+</section>
