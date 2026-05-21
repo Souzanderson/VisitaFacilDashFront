@@ -405,7 +405,7 @@ export class UteisService {
     `;
       btok.onclick = () => {
         resolve(Array.from(lista_retorno));
-        flutuant.parentElement.removeChild(flutuant);
+        flutuant.parentElement?.removeChild(flutuant);
         window.removeEventListener("click", evt_listen);
       };
 
@@ -417,7 +417,7 @@ export class UteisService {
         font-size: 12px;
         `;
       btc.onclick = () => {
-        flutuant.parentElement.removeChild(flutuant);
+        flutuant.parentElement?.removeChild(flutuant);
         window.removeEventListener("click", evt_listen);
       };
 

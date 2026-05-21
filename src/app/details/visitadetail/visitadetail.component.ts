@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from "@angular/core";
+import { Component, HostListener, Inject, OnInit, Optional } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { ConnectionService } from "src/app/services/connection.service";
 
@@ -13,6 +13,16 @@ export class VisitadetailComponent implements OnInit {
   public videos: any = [];
   public audios: any = [];
   public loading = false;
+  public lightbox: { img: string; rotation: number; flipped: boolean; imgs: any[]; idx: number } | null = null;
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(e: KeyboardEvent) {
+    if (!this.lightbox) return;
+    if (e.key === 'Escape')     this.closeLightbox();
+    if (e.key === 'ArrowLeft')  this.prevImage();
+    if (e.key === 'ArrowRight') this.nextImage();
+    if (e.key === 'r')          this.rotateLightbox(1);
+  }
 
   constructor(
     @Optional() public dialogRef: MatDialogRef<VisitadetailComponent>,
@@ -45,6 +55,31 @@ export class VisitadetailComponent implements OnInit {
   }
 
   skeletonArr(n: number) { return Array(n > 0 ? n : 3); }
+
+  openLightbox(imgs: any[], idx: number) {
+    this.lightbox = { img: imgs[idx].linkimg, rotation: 0, flipped: false, imgs, idx };
+  }
+  closeLightbox() { this.lightbox = null; }
+  rotateLightbox(dir: number) { if (this.lightbox) this.lightbox.rotation = (this.lightbox.rotation + dir * 90 + 360) % 360; }
+  flipLightbox() { if (this.lightbox) this.lightbox.flipped = !this.lightbox.flipped; }
+  prevImage() {
+    if (this.lightbox && this.lightbox.idx > 0) {
+      this.lightbox.idx--;
+      this.lightbox.img = this.lightbox.imgs[this.lightbox.idx].linkimg;
+      this.lightbox.rotation = 0; this.lightbox.flipped = false;
+    }
+  }
+  nextImage() {
+    if (this.lightbox && this.lightbox.idx < this.lightbox.imgs.length - 1) {
+      this.lightbox.idx++;
+      this.lightbox.img = this.lightbox.imgs[this.lightbox.idx].linkimg;
+      this.lightbox.rotation = 0; this.lightbox.flipped = false;
+    }
+  }
+  getLightboxTransform() {
+    if (!this.lightbox) return '';
+    return `rotate(${this.lightbox.rotation}deg) scaleX(${this.lightbox.flipped ? -1 : 1})`;
+  }
 
   isDemarcado(demarcacao) {
     try {

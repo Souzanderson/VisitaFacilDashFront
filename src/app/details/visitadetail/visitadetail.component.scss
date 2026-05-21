@@ -124,6 +124,12 @@
   &:hover .media-overlay { opacity: 1; }
 }
 
+// Header de seção genérico (sem arredondamento inferior, sem border-bottom de subseção)
+.section-header {
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+}
+
 // Cards de vídeo
 .video-card {
   width: 240px;
@@ -146,4 +152,62 @@
     background: var(--color-odd);
     text-align: center;
   }
+}
+
+// Lightbox
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.lightbox-img {
+  max-width: 80vw;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: var(--radius);
+  transition: transform 0.2s ease;
+}
+
+.lightbox-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.lb-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) { background: rgba(255, 255, 255, 0.3); }
+  &:disabled { opacity: 0.3; cursor: default; }
+  &.lb-close { background: rgba(202, 17, 17, 0.7); }
+}
+
+.lightbox-counter {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-family: Poppins, sans-serif;
 }

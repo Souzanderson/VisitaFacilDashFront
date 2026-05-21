@@ -11,12 +11,9 @@
   </div>
   <div class="form">
     <!-- DETALHES DA VISITA -->
-    <div class="table">
-      <div class="item">
-        <div class="toptable">
-          <div class="label fc">Detalhes da Visita</div>
-        </div>
-      </div>
+    <div class="media-header section-header">
+      <icon icon="/assets/icons/details.svg" width="18px" height="18px"></icon>
+      Detalhes da Visita
     </div>
     <div class="table" *ngIf="data" table="true" style="--cs: 1fr 1fr">
       <div class="item">
@@ -183,12 +180,9 @@
 
     <!-- DEMARCAÇÕES -->
     <div class="demarcacaoes" *ngIf="isDemarcado(data.demarcacaoprop)">
-      <div class="table">
-        <div class="item">
-          <div class="toptable">
-            <div class="label fc">Dados Geográficos</div>
-          </div>
-        </div>
+      <div class="media-header section-header">
+        <icon icon="/assets/icons/locg.svg" width="18px" height="18px"></icon>
+        Dados Geográficos
       </div>
 
       <div class="table" *ngIf="data" table="true" style="--cs: 1fr 1fr">
@@ -255,7 +249,7 @@
       </div>
       <div class="media-grid">
         <div class="media-skeleton" *ngFor="let s of skeletonArr(data.imagens); let i = index" [hidden]="!loading"></div>
-        <div class="media-card img-card" *ngFor="let img of imagens" [hidden]="loading">
+        <div class="media-card img-card" *ngFor="let img of imagens; let j = index" [hidden]="loading" (click)="openLightbox(imagens, j)">
           <img [src]="img.linkimg" loading="lazy" />
           <div class="media-overlay">&#128269;</div>
         </div>
@@ -279,3 +273,19 @@
 
   </div>
 </main>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" *ngIf="lightbox" (click)="closeLightbox()">
+  <div class="lightbox-content" (click)="$event.stopPropagation()">
+    <img [src]="lightbox.img" [style.transform]="getLightboxTransform()" class="lightbox-img" />
+    <div class="lightbox-controls">
+      <button class="lb-btn" (click)="prevImage()" [disabled]="lightbox.idx === 0">&#8249;</button>
+      <button class="lb-btn" (click)="rotateLightbox(-1)">&#8635;</button>
+      <button class="lb-btn" (click)="rotateLightbox(1)">&#8634;</button>
+      <button class="lb-btn" (click)="flipLightbox()">&#8596;</button>
+      <button class="lb-btn" (click)="nextImage()" [disabled]="lightbox.idx === lightbox.imgs.length - 1">&#8250;</button>
+      <button class="lb-btn lb-close" (click)="closeLightbox()">&#10005;</button>
+    </div>
+    <div class="lightbox-counter">{{ lightbox.idx + 1 }} / {{ lightbox.imgs.length }}</div>
+  </div>
+</div>
