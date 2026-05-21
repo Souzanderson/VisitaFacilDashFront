@@ -55,7 +55,7 @@ export class ConnectionService {
     );
   }
 
-  getVendedores(dtini = null, dtfim = null, idvendedor = null) {
+  getVendedores(dtini: any = null, dtfim: any = null, idvendedor: any = null) {
     if (dtini && dtfim && idvendedor) {
       return this.http.get(
         this.URL_PY +
