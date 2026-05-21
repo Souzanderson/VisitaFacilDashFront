@@ -17,7 +17,9 @@
       "dom"
     ],
     "skipLibCheck": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false
