@@ -21,9 +21,16 @@
 }
 
 .items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 4px;
+
   .item {
-    margin: 4px;
+    flex: 1 1 calc(33% - 4px);
+    min-width: 200px;
   }
+
   .bodytable {
     min-height: 50px;
   }
