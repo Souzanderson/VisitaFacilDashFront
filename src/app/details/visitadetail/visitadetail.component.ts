@@ -44,6 +44,8 @@ export class VisitadetailComponent implements OnInit {
     }, 2000);
   }
 
+  skeletonArr(n: number) { return Array(n > 0 ? n : 3); }
+
   isDemarcado(demarcacao) {
     try {
       let res = JSON.parse(demarcacao);

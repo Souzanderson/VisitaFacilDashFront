@@ -248,38 +248,31 @@
     </div>
 
     <!-- IMAGENS -->
-    <div class="imagens" *ngIf="data.imagens > 0">
-      <div class="table">
-        <div class="item">
-          <div class="toptable">
-            <div class="label fc">Imagens</div>
-          </div>
-        </div>
-        <div class="bodytable bodyimage">
-          <inlinespin *ngIf="loading"></inlinespin>
-          <div *ngFor="let img of imagens">
-            <div class="image" *ngIf="!loading">
-              <img [src]="img.linkimg" />
-            </div>
-          </div>
+    <div class="media-section" *ngIf="data.imagens > 0">
+      <div class="media-header">
+        <icon icon="/assets/icons/image.svg" width="18px" height="18px"></icon>
+        Imagens <span class="media-count">{{ data.imagens }}</span>
+      </div>
+      <div class="media-grid">
+        <div class="media-skeleton" *ngFor="let s of skeletonArr(data.imagens); let i = index" [hidden]="!loading"></div>
+        <div class="media-card img-card" *ngFor="let img of imagens" [hidden]="loading">
+          <img [src]="img.linkimg" loading="lazy" />
+          <div class="media-overlay">&#128269;</div>
         </div>
       </div>
     </div>
+
     <!-- VIDEOS -->
-    <div class="imagens" *ngIf="videos.length > 0">
-      <div class="table">
-        <div class="item">
-          <div class="toptable">
-            <div class="label fc">Vídeos</div>
-          </div>
-        </div>
-        <div class="bodytable bodyimage">
-          <inlinespin *ngIf="loading"></inlinespin>
-          <div *ngFor="let video of videos">
-            <div class="image" *ngIf="!loading">
-              <video controls [src]="video.linkvideo" preload="metadata"></video>
-            </div>
-          </div>
+    <div class="media-section" *ngIf="data.videos > 0">
+      <div class="media-header">
+        <icon icon="/assets/icons/videos.svg" width="18px" height="18px"></icon>
+        Vídeos <span class="media-count">{{ data.videos }}</span>
+      </div>
+      <div class="media-grid">
+        <div class="media-skeleton video-skeleton" *ngFor="let s of skeletonArr(data.videos)" [hidden]="!loading"></div>
+        <div class="media-card video-card" *ngFor="let video of videos; let j = index" [hidden]="loading">
+          <video controls [src]="video.linkvideo" preload="metadata"></video>
+          <div class="video-label">Vídeo {{ j + 1 }}</div>
         </div>
       </div>
     </div>
