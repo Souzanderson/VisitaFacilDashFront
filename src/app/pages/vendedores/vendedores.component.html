@@ -93,7 +93,7 @@
     </div>
     <div
       class="table"
-      style="--cs: 2fr 1fr repeat(6, 140px)"
+      style="--cs: 2fr 1fr repeat(7, 140px)"
       *ngIf="!loading && visitas.length > 0"
     >
       <div class="toptable" table="true">
@@ -103,6 +103,7 @@
         <div class="label jc">Problemas</div>
         <div class="label jc">Imagens</div>
         <div class="label jc">Áudios</div>
+        <div class="label jc">Vídeos</div>
         <div class="label jc">Demarcação</div>
         <div class="label jc">Data</div>
       </div>
@@ -180,6 +181,10 @@
         <div class="label jc">
           <icon height="32px" width="32px" icon="/assets/icons/audio.svg"></icon
           >{{ item.audios }}
+        </div>
+        <div class="label jc">
+          <icon height="32px" width="32px" icon="/assets/icons/video.svg"></icon
+          >{{ item.videos }}
         </div>
         <div class="label jc" *ngIf="isDemarcado(item.demarcacaoprop)">
           <icon height="32px" width="32px" icon="/assets/icons/locg.svg"></icon>
