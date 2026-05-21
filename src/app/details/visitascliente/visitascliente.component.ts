@@ -252,7 +252,14 @@ export class VisitasclienteComponent implements OnInit {
       this.eventoslist = this.eventos;
       this.dropevento.setItems(this.eventoslist);
       this.contato = contato;
-      this.visitas = visitas;
+      this.visitas = visitas as any[];
+      await Promise.all(
+        this.visitas.map(async (v: any) => {
+          try {
+            v.videosdata = await this.conn.getVideosVisitas(v.id).toPromise();
+          } catch { v.videosdata = []; }
+        })
+      );
       this.aux = this.visitas;
 
       this.structCharts();

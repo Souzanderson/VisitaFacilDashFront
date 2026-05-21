@@ -309,7 +309,7 @@
                   <div class="audio-list">
                     <div class="audio-item" *ngFor="let audio of item.audios; let ai = index">
                       <span class="audio-label">Áudio {{ ai + 1 }}</span>
-                      <audio controls style="width: 100%">
+                      <audio controls>
                         <source [src]="audio.linkaudio" type="audio/ogg" />
                       </audio>
                     </div>
@@ -404,13 +404,13 @@
           </div>
 
           <!-- VÍDEOS -->
-          <div class="media-section noprint" *ngIf="item.videos?.length > 0">
+          <div class="media-section noprint" *ngIf="item.videosdata?.length > 0">
             <div class="media-header-vc">
               <icon icon="/assets/icons/videos.svg" width="16px" height="16px"></icon>
-              Vídeos <span class="media-count-vc">{{ item.videos.length }}</span>
+              Vídeos <span class="media-count-vc">{{ item.videosdata.length }}</span>
             </div>
             <div class="video-grid" style="margin: 4px; padding: 8px">
-              <div class="vc-video-card" *ngFor="let video of item.videos; let vi = index">
+              <div class="vc-video-card" *ngFor="let video of item.videosdata; let vi = index">
                 <video controls [src]="video.linkvideo" preload="metadata"></video>
                 <div class="vc-video-label">Vídeo {{ vi + 1 }}</div>
               </div>
