@@ -101,10 +101,13 @@
         </div>
         <div class="bodytable">
           <inlinespin *ngIf="loading"></inlinespin>
-          <div class="label" *ngIf="!loading">
-            <audio controls="controls" style="width: 100%">
-              <source [src]="audios[0].linkaudio" type="audio/ogg" />
-            </audio>
+          <div class="audio-list" *ngIf="!loading">
+            <div class="audio-item" *ngFor="let audio of audios; let i = index">
+              <span class="audio-label">Áudio {{ i + 1 }}</span>
+              <audio controls style="width: 100%">
+                <source [src]="audio.linkaudio" type="audio/ogg" />
+              </audio>
+            </div>
           </div>
         </div>
       </div>
