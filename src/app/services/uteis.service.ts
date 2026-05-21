@@ -62,10 +62,10 @@ export class UteisService {
     }, time);
 
     try {
-      document.getElementById("modal").appendChild(aviso);
+      document.getElementById("modal")?.appendChild(aviso);
     } catch (error) {
       try {
-        document.getElementById("container").appendChild(aviso);
+        document.getElementById("container")?.appendChild(aviso);
       } catch (error) {}
     }
   }
@@ -197,7 +197,7 @@ export class UteisService {
     evt,
     parent_element,
     list_elements,
-    selected = [],
+    selected: any[] = [],
     offsetx = 0,
     offsety = 0,
     mask: "fone" | "date" | "text" | "number" = "text",
@@ -271,7 +271,7 @@ export class UteisService {
         `;
       clear.onclick = () => {
         resolve(null);
-        flutuant.parentElement.removeChild(flutuant);
+        flutuant.parentElement?.removeChild(flutuant);
         window.removeEventListener("click", evt_listen);
       };
 
@@ -386,12 +386,12 @@ export class UteisService {
         }
       };
 
-      search.onchange = search.onkeyup;
+      search.onchange = search.onkeyup as any;
       flutuant.appendChild(div);
 
       const evt_listen = (e) => {
-        if (!flutuant.contains(e.target)) {
-          flutuant.parentElement.removeChild(flutuant);
+        if (!flutuant.contains(e.target as Node)) {
+          flutuant.parentElement?.removeChild(flutuant);
           window.removeEventListener("click", evt_listen);
         }
       };
