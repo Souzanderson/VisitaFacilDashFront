@@ -293,7 +293,7 @@
               </div>
             </div>
 
-            <div class="item">
+            <div class="item" *ngIf="item.audios?.length > 0">
               <div class="toptable">
                 <div class="label">
                   <icon
@@ -306,13 +306,14 @@
               </div>
               <div class="bodytable">
                 <div class="label">
-                  <audio
-                    controls="controls"
-                    style="width: 100%; height: 25px"
-                    *ngIf="item.audios ? item.audios.length > 0 : false"
-                  >
-                    <source [src]="item.audios[0].linkaudio" type="audio/ogg" />
-                  </audio>
+                  <div class="audio-list">
+                    <div class="audio-item" *ngFor="let audio of item.audios; let ai = index">
+                      <span class="audio-label">Áudio {{ ai + 1 }}</span>
+                      <audio controls style="width: 100%">
+                        <source [src]="audio.linkaudio" type="audio/ogg" />
+                      </audio>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -388,17 +389,31 @@
               ></mapscomp>
             </card>
           </div>
-          <div class="toptable mg4" *ngIf="item.imagens">
-            <div class="label">IMAGENS</div>
+          <!-- IMAGENS -->
+          <div class="media-section noprint" *ngIf="item.imagens?.length > 0">
+            <div class="media-header-vc">
+              <icon icon="/assets/icons/image.svg" width="16px" height="16px"></icon>
+              Imagens <span class="media-count-vc">{{ item.imagens.length }}</span>
+            </div>
+            <div class="bodytable justify" style="margin: 4px; flex-wrap: wrap; gap: 8px; padding: 8px">
+              <div class="image" *ngFor="let img of item.imagens; let j = index" (click)="openLightbox(item.imagens, j)">
+                <img [src]="img.linkimg" />
+                <div class="image-overlay">&#128269; Ver</div>
+              </div>
+            </div>
           </div>
-          <div
-            class="bodytable justify noprint"
-            *ngIf="item.imagens"
-            style="margin: 4px"
-          >
-            <div class="image" *ngFor="let img of item.imagens; let j = index" (click)="openLightbox(item.imagens, j)">
-              <img [src]="img.linkimg" />
-              <div class="image-overlay">&#128269; Ver</div>
+
+          <!-- VÍDEOS -->
+          <div class="media-section noprint" *ngIf="item.videos?.length > 0">
+            <div class="media-header-vc">
+              <icon icon="/assets/icons/videos.svg" width="16px" height="16px"></icon>
+              Vídeos <span class="media-count-vc">{{ item.videos.length }}</span>
+            </div>
+            <div class="video-grid" style="margin: 4px; padding: 8px">
+              <div class="vc-video-card" *ngFor="let video of item.videos; let vi = index">
+                <video controls [src]="video.linkvideo" preload="metadata"></video>
+                <div class="vc-video-label">Vídeo {{ vi + 1 }}</div>
+              </div>
             </div>
           </div>
         </div>
