@@ -30,7 +30,7 @@ export class VisitasclienteComponent implements OnInit {
   public aux: any = [];
   public id = null;
   public statistics: any = [];
-  public statisticsformas = [];
+  public statisticsformas: any = [];
   public distopt = "maior";
   public vendedor: any;
   public distance;
@@ -300,6 +300,7 @@ export class VisitasclienteComponent implements OnInit {
       this.contato = contato;
       this.visitas = visitas;
       this.aux = this.visitas;
+      console.log("VISITAS => ", this.visitas);
 
       this.structCharts();
     } catch (error) {}
@@ -347,6 +348,11 @@ export class VisitasclienteComponent implements OnInit {
       if (v["audios"]) {
         try {
           v["audios"] = JSON.parse(v["audios"]);
+        } catch (error) {}
+      }
+      if (v["videos"]) {
+        try {
+          v["videos"] = JSON.parse(v["videos"]);
         } catch (error) {}
       }
       if (v["demarcacaoprop"]) {
