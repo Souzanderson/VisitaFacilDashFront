@@ -237,24 +237,23 @@ export class VisitasclienteComponent implements OnInit {
     this.loading = true;
     try {
       this.cliente = await this.conn.getCliente(this.id).toPromise();
-      this.vendedor = await this.conn.getVendedores(this.dtini, this.dtfim, this.cliente.idrepresentanteerp).toPromise();
-      try {
-        this.vendedor = this.vendedor[0];
-      } catch (error) {
-        this.vendedor = null;
-      }
-      this.objetivos = await this.conn.getObjetivos().toPromise();
-      this.eventos = await this.conn.getEventos().toPromise();
+
+      const [vendedor, objetivos, eventos, contato, visitas] = await Promise.all([
+        this.conn.getVendedores(this.dtini, this.dtfim, this.cliente.idrepresentanteerp as any).toPromise(),
+        this.conn.getObjetivos().toPromise(),
+        this.conn.getEventos().toPromise(),
+        this.conn.getContato().toPromise(),
+        this.conn.getByClient(this.id, this.dtini, this.dtfim).toPromise(),
+      ]);
+
+      try { this.vendedor = vendedor[0]; } catch { this.vendedor = null; }
+      this.objetivos = objetivos;
+      this.eventos = eventos;
       this.eventoslist = this.eventos;
       this.dropevento.setItems(this.eventoslist);
-      this.contato = await this.conn.getContato().toPromise();
-      this.visitas = await this.conn
-        .getByClient(this.id, this.dtini, this.dtfim)
-        .toPromise();
+      this.contato = contato;
+      this.visitas = visitas;
       this.aux = this.visitas;
-      console.log(this.cliente);
-      console.log(this.visitas);
-      console.log(this.vendedor);
 
       this.structCharts();
     } catch (error) {}
