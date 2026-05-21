@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DatepickerComponent } from 'src/app/components/datepicker/datepicker.component';
 import { AddagendamentoComponent } from 'src/app/registers/addagendamento/addagendamento.component';
 import { ConnectionService } from 'src/app/services/connection.service';

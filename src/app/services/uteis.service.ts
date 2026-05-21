@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import * as moment from "moment";
+import moment from "moment";
 import { environment } from "src/environments/environment";
 import * as XLSX from "xlsx";
 

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, Optional, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DatepickerComponent } from 'src/app/components/datepicker/datepicker.component';
 import { DropsearchComponent } from 'src/app/components/dropsearch/dropsearch.component';
 import { ConnectionService } from 'src/app/services/connection.service';

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DatepickerComponent } from 'src/app/components/datepicker/datepicker.component';
 import { SearchbarComponent } from 'src/app/components/searchbar/searchbar.component';
 import { VisitadetailComponent } from 'src/app/details/visitadetail/visitadetail.component';

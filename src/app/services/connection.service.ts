@@ -1,93 +1,94 @@
-import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ConnectionService {
   public URL_PY = environment.URL_SERVER_PY;
   // public user: any = null;
   public user: any = {
-    hascode: '',
+    hascode: "",
     idsistema: environment.user_test,
-    iderp: '',
-    iderpvendedor: '',
-    isativo: '',
-    master: '',
+    iderp: "",
+    iderpvendedor: "",
+    isativo: "",
+    master: "",
   };
   constructor(private http: HttpClient) {}
 
   async login(user, pass) {
     let body = {};
 
-    body['origem'] = 'mobile';
-    body['usuario'] = {};
-    body['usuario']['dsLogin'] = user;
-    body['usuario']['dsSenha'] = pass;
+    body["origem"] = "mobile";
+    body["usuario"] = {};
+    body["usuario"]["dsLogin"] = user;
+    body["usuario"]["dsSenha"] = pass;
 
-    this.user = await this.http
-      .post(this.URL_PY + 'login', body)
-      .toPromise();
+    this.user = await this.http.post(this.URL_PY + "login", body).toPromise();
     console.log(this.user);
   }
 
-  getAllVendedores(){
-    return this.http.get(
-      this.URL_PY +
-        `vendedor?hash=${this.user.hascode}`);
+  getAllVendedores() {
+    return this.http.get(this.URL_PY + `vendedor?hash=${this.user.hascode}`);
   }
 
-  getClientes(iderpvendedor){
+  getClientes(iderpvendedor) {
     return this.http.get(
       this.URL_PY +
-        `cliente?hash=${this.user.hascode}&iderpvendedor=${iderpvendedor}`);
+        `cliente?hash=${this.user.hascode}&iderpvendedor=${iderpvendedor}`,
+    );
   }
 
-  getClientePropriedade(idcliente){
+  getClientePropriedade(idcliente) {
     return this.http.get(
       this.URL_PY +
-        `cliente/propriedade?hash=${this.user.hascode}&idcliente=${idcliente}`);
+        `cliente/propriedade?hash=${this.user.hascode}&idcliente=${idcliente}`,
+    );
   }
 
-  sendAgendamento(agendamento){
-    return this.http.post(this.URL_PY+ `visitas/agenda?hash=${this.user.hascode}`, agendamento);
+  sendAgendamento(agendamento) {
+    return this.http.post(
+      this.URL_PY + `visitas/agenda?hash=${this.user.hascode}`,
+      agendamento,
+    );
   }
 
   getVendedores(dtini = null, dtfim = null, idvendedor = null) {
     if (dtini && dtfim && idvendedor) {
       return this.http.get(
         this.URL_PY +
-          'vendedor/details?idsistema=' +
+          "vendedor/details?idsistema=" +
           this.user.idsistema +
-          '&hash=' +
+          "&hash=" +
           this.user.hascode +
-          '&dtini=' +
+          "&dtini=" +
           dtini +
-          '&dtfim=' +
+          "&dtfim=" +
           dtfim +
-          '&idvendedor=' +
-          idvendedor
+          "&idvendedor=" +
+          idvendedor,
       );
     } else if (dtini && dtfim) {
       return this.http.get(
         this.URL_PY +
-          'vendedor/details?idsistema=' +
+          "vendedor/details?idsistema=" +
           this.user.idsistema +
-          '&hash=' +
+          "&hash=" +
           this.user.hascode +
-          '&dtini=' +
+          "&dtini=" +
           dtini +
-          '&dtfim=' +
-          dtfim
+          "&dtfim=" +
+          dtfim,
       );
     } else {
       return this.http.get(
         this.URL_PY +
-          'vendedor/details?idsistema=' +
+          "vendedor/details?idsistema=" +
           this.user.idsistema +
-          '&hash=' +
-          this.user.hascode
+          "&hash=" +
+          this.user.hascode,
       );
     }
   }
@@ -95,10 +96,10 @@ export class ConnectionService {
   getStatistic() {
     return this.http.get(
       this.URL_PY +
-        'visitas/statistics?idsistema=' +
+        "visitas/statistics?idsistema=" +
         this.user.idsistema +
-        '&hash=' +
-        this.user.hascode
+        "&hash=" +
+        this.user.hascode,
     );
   }
 
@@ -110,98 +111,107 @@ export class ConnectionService {
       dtfim: dtfim,
     };
     return this.http.post(
-      this.URL_PY + 'visitas/doc?hash=' + this.user.hascode,
-      body
+      this.URL_PY + "visitas/doc?hash=" + this.user.hascode,
+      body,
     );
   }
 
   getObjetivos() {
     return this.http.get(
       this.URL_PY +
-        'visitas/objetivos?idsistema=' +
+        "visitas/objetivos?idsistema=" +
         this.user.idsistema +
-        '&hash=' +
-        this.user.hascode
+        "&hash=" +
+        this.user.hascode,
     );
   }
 
   getEventos() {
     return this.http.get(
       this.URL_PY +
-        'eventos?idsistema=' +
+        "eventos?idsistema=" +
         this.user.idsistema +
-        '&hash=' +
-        this.user.hascode
+        "&hash=" +
+        this.user.hascode,
     );
   }
 
   getCliente(idcliente) {
     return this.http.get(
       this.URL_PY +
-        'cliente/byid?idsistema=' +
+        "cliente/byid?idsistema=" +
         this.user.idsistema +
-        '&hash=' +
+        "&hash=" +
         this.user.hascode +
-        '&idcliente=' +
-        idcliente
+        "&idcliente=" +
+        idcliente,
     );
   }
 
   getContato() {
     return this.http.get(
       this.URL_PY +
-        'visitas/contato?idsistema=' +
+        "visitas/contato?idsistema=" +
         this.user.idsistema +
-        '&hash=' +
-        this.user.hascode
+        "&hash=" +
+        this.user.hascode,
     );
   }
 
   getVisitasByClient() {
-    return this.http.get(`${this.URL_PY}visitas/byclient?idsistema=${this.user.idsistema}&hash=${this.user.hascode}`);
+    return this.http.get(
+      `${this.URL_PY}visitas/byclient?idsistema=${this.user.idsistema}&hash=${this.user.hascode}`,
+    );
   }
 
-  getVisitas(dtini, dtfim, hashgrupo = null, idvendedor=null) {
+  getVisitas(dtini, dtfim, hashgrupo = null, idvendedor = null) {
     let body = {
       data: {
         idSistema: this.user.idsistema,
         dtinicio: dtini,
         dtfim: dtfim,
         hashgrupo: hashgrupo,
-        idvendedor: idvendedor
+        idvendedor: idvendedor,
       },
     };
     return this.http.post(
-      this.URL_PY + 'visitas/bydata?hash=' + this.user.hascode,
-      body
+      this.URL_PY + "visitas/bydata?hash=" + this.user.hascode,
+      body,
     );
   }
 
   getGrupoVisitas(dtini, dtfim) {
     return this.http.get(
       this.URL_PY +
-        `visitagrupos?hash=${this.user.hascode}&idsistema=${this.user.idsistema}&dtini=${dtini}&dtfim=${dtfim}`
+        `visitagrupos?hash=${this.user.hascode}&idsistema=${this.user.idsistema}&dtini=${dtini}&dtfim=${dtfim}`,
     );
   }
 
   getImagensVisitas(idvisita) {
     return this.http.get(
       this.URL_PY +
-        `visitas/visitaimagem?hash=${this.user.hascode}&idsistema=${this.user.idsistema}&idvisita=${idvisita}`
+        `visitas/visitaimagem?hash=${this.user.hascode}&idsistema=${this.user.idsistema}&idvisita=${idvisita}`,
     );
   }
 
   getAudiosVisitas(idvisita) {
     return this.http.get(
       this.URL_PY +
-        `visitas/visitaaudios?hash=${this.user.hascode}&idsistema=${this.user.idsistema}&idvisita=${idvisita}`
+        `visitas/visitaaudios?hash=${this.user.hascode}&idsistema=${this.user.idsistema}&idvisita=${idvisita}`,
     );
   }
 
-  getAgendamentos(dtini, dtfim){
+  getVideosVisitas(idvisita) {
     return this.http.get(
       this.URL_PY +
-        `visitas/agenda?hash=${this.user.hascode}&dtini=${dtini}&dtfim=${dtfim}`
+        `visitas/visitavideos?hash=${this.user.hascode}&idsistema=${this.user.idsistema}&idvisita=${idvisita}`,
+    );
+  }
+
+  getAgendamentos(dtini, dtfim) {
+    return this.http.get(
+      this.URL_PY +
+        `visitas/agenda?hash=${this.user.hascode}&dtini=${dtini}&dtfim=${dtfim}`,
     );
   }
 }
