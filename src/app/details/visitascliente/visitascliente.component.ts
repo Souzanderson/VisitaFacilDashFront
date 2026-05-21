@@ -1,22 +1,22 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import moment from 'moment';
-import { DatepickerComponent } from 'src/app/components/datepicker/datepicker.component';
-import { DropsearchComponent } from 'src/app/components/dropsearch/dropsearch.component';
-import { ConnectionService } from 'src/app/services/connection.service';
-import { UteisService } from 'src/app/services/uteis.service';
+import { Component, HostListener, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import moment from "moment";
+import { DatepickerComponent } from "src/app/components/datepicker/datepicker.component";
+import { DropsearchComponent } from "src/app/components/dropsearch/dropsearch.component";
+import { ConnectionService } from "src/app/services/connection.service";
+import { UteisService } from "src/app/services/uteis.service";
 
 @Component({
-  selector: 'app-visitascliente',
-  templateUrl: './visitascliente.component.html',
-  styleUrls: ['./visitascliente.component.scss'],
+  selector: "app-visitascliente",
+  templateUrl: "./visitascliente.component.html",
+  styleUrls: ["./visitascliente.component.scss"],
 })
 export class VisitasclienteComponent implements OnInit {
-  @ViewChild('dti') dti: DatepickerComponent;
-  @ViewChild('dtf') dtf: DatepickerComponent;
-  @ViewChild('dropevento') dropevento: DropsearchComponent;
-  public dtini = moment().subtract(30, 'days').format('YYYY/MM/DD');
-  public dtfim = moment().format('YYYY/MM/DD');
+  @ViewChild("dti") dti!: DatepickerComponent;
+  @ViewChild("dtf") dtf!: DatepickerComponent;
+  @ViewChild("dropevento") dropevento!: DropsearchComponent;
+  public dtini = moment().subtract(30, "days").format("YYYY/MM/DD");
+  public dtfim = moment().format("YYYY/MM/DD");
   public loading = true;
   public visitas: any = [];
   public cliente: any;
@@ -29,32 +29,44 @@ export class VisitasclienteComponent implements OnInit {
   public contatodic: any = {};
   public aux: any = [];
   public id = null;
-  public statistics = [];
+  public statistics: any = [];
   public statisticsformas = [];
-  public distopt = 'maior';
-  public vendedor:any;
+  public distopt = "maior";
+  public vendedor: any;
   public distance;
   public sectors = [
-    { sector: 'Bem-sucedidas', size: 0 },
-    { sector: 'Malsucedidas', size: 0 },
+    { sector: "Bem-sucedidas", size: 0 },
+    { sector: "Malsucedidas", size: 0 },
   ];
 
-  public lightbox: { img: string; rotation: number; flipped: boolean; imgs: any[]; idx: number } | null = null;
-  public mapModal: { id: string; location?: any; demarcacao?: any; zoom: number; title: string } | null = null;
+  public lightbox: {
+    img: string;
+    rotation: number;
+    flipped: boolean;
+    imgs: any[];
+    idx: number;
+  } | null = null;
+  public mapModal: {
+    id: string;
+    location?: any;
+    demarcacao?: any;
+    zoom: number;
+    title: string;
+  } | null = null;
 
-  @HostListener('document:keydown', ['$event'])
+  @HostListener("document:keydown", ["$event"])
   onKeyDown(e: KeyboardEvent) {
     if (!this.lightbox) return;
-    if (e.key === 'Escape') this.closeLightbox();
-    if (e.key === 'ArrowLeft') this.prevImage();
-    if (e.key === 'ArrowRight') this.nextImage();
-    if (e.key === 'r') this.rotateLightbox(1);
+    if (e.key === "Escape") this.closeLightbox();
+    if (e.key === "ArrowLeft") this.prevImage();
+    if (e.key === "ArrowRight") this.nextImage();
+    if (e.key === "r") this.rotateLightbox(1);
   }
 
   constructor(
     private route: ActivatedRoute,
     private conn: ConnectionService,
-    private util: UteisService
+    private util: UteisService,
   ) {}
 
   ngOnInit(): void {
@@ -65,16 +77,16 @@ export class VisitasclienteComponent implements OnInit {
 
   async init() {
     this.route.params.pipe().forEach((params) => {
-      this.id = params['idcliente'];
+      this.id = params["idcliente"];
     });
-    this.dti.setValue(moment().subtract(30, 'days').format('DD/MM/YYYY'));
-    this.dtf.setValue(moment().format('DD/MM/YYYY'));
+    this.dti.setValue(moment().subtract(30, "days").format("DD/MM/YYYY"));
+    this.dtf.setValue(moment().format("DD/MM/YYYY"));
     await this.get();
   }
 
   async search() {
-    this.dtini = moment(this.dti.value, 'DD/MM/YYYY').format('YYYY/MM/DD');
-    this.dtfim = moment(this.dtf.value, 'DD/MM/YYYY').format('YYYY/MM/DD');
+    this.dtini = moment(this.dti.value, "DD/MM/YYYY").format("YYYY/MM/DD");
+    this.dtfim = moment(this.dtf.value, "DD/MM/YYYY").format("YYYY/MM/DD");
     await this.get();
     this.instant();
   }
@@ -97,15 +109,15 @@ export class VisitasclienteComponent implements OnInit {
               .getDistance(
                 this.getPropLocation(
                   visita.latitudeoriginal,
-                  visita.longitudeoriginal
+                  visita.longitudeoriginal,
                 ),
                 this.getPropLocation(
                   visita.enderecocompleto.latitude,
-                  visita.enderecocompleto.longitude
+                  visita.enderecocompleto.longitude,
                 ),
-                1000
+                1000,
               )
-              .toFixed(2) + 'km'
+              .toFixed(2) + "km"
           );
         } else {
           return Number(
@@ -113,23 +125,23 @@ export class VisitasclienteComponent implements OnInit {
               .getDistance(
                 this.getPropLocation(
                   visita.latitudeoriginal,
-                  visita.longitudeoriginal
+                  visita.longitudeoriginal,
                 ),
                 this.getPropLocation(
                   visita.enderecocompleto.latitude,
-                  visita.enderecocompleto.longitude
+                  visita.enderecocompleto.longitude,
                 ),
-                1000
+                1000,
               )
-              .toFixed(2)
+              .toFixed(2),
           );
         }
       } else {
-        if (!nb) return 'Não identificada!';
+        if (!nb) return "Não identificada!";
         else return 0;
       }
     } catch (error) {
-      if (!nb) return 'Não identificada!';
+      if (!nb) return "Não identificada!";
       else return 0;
     }
   }
@@ -140,23 +152,38 @@ export class VisitasclienteComponent implements OnInit {
 
   shareReport() {
     const url = `${window.location.origin}/relatorio/${this.id}?dtini=${this.dtini}&dtfim=${this.dtfim}&token=${this.conn.user.hascode}&sys=${this.conn.user.idsistema}`;
-    window.open(url, '_blank');
+    window.open(url, "_blank");
     navigator.clipboard.writeText(url).then(() => {
-      this.util.alert('Relatório aberto e link copiado!', 'var(--color-tertiary)', 'white', 3000);
+      this.util.alert(
+        "Relatório aberto e link copiado!",
+        "var(--color-tertiary)",
+        "white",
+        3000,
+      );
     });
   }
 
   openLightbox(imgs: any[], idx: number) {
-    this.lightbox = { img: imgs[idx].linkimg, rotation: 0, flipped: false, imgs, idx };
+    this.lightbox = {
+      img: imgs[idx].linkimg,
+      rotation: 0,
+      flipped: false,
+      imgs,
+      idx,
+    };
   }
 
-  closeLightbox() { this.lightbox = null; }
+  closeLightbox() {
+    this.lightbox = null;
+  }
 
   rotateLightbox(dir: number) {
-    this.lightbox.rotation = (this.lightbox.rotation + dir * 90 + 360) % 360;
+    this.lightbox!.rotation = (this.lightbox!.rotation + dir * 90 + 360) % 360;
   }
 
-  flipLightbox() { this.lightbox.flipped = !this.lightbox.flipped; }
+  flipLightbox() {
+    this.lightbox!.flipped = !this.lightbox!.flipped;
+  }
 
   prevImage() {
     if (this.lightbox && this.lightbox.idx > 0) {
@@ -177,23 +204,31 @@ export class VisitasclienteComponent implements OnInit {
   }
 
   getLightboxTransform() {
-    if (!this.lightbox) return '';
+    if (!this.lightbox) return "";
     return `rotate(${this.lightbox.rotation}deg) scaleX(${this.lightbox.flipped ? -1 : 1})`;
   }
 
-  openMapModal(config: { id: string; location?: any; demarcacao?: any; zoom: number; title: string }) {
+  openMapModal(config: {
+    id: string;
+    location?: any;
+    demarcacao?: any;
+    zoom: number;
+    title: string;
+  }) {
     this.mapModal = config;
   }
 
-  closeMapModal() { this.mapModal = null; }
+  closeMapModal() {
+    this.mapModal = null;
+  }
 
   getKm(visita) {
     try {
       return (
-        (Number(visita.kmfinal) - Number(visita.kminicial)).toFixed(2) + ' km'
+        (Number(visita.kmfinal) - Number(visita.kminicial)).toFixed(2) + " km"
       );
     } catch (error) {
-      return 0 + ' km';
+      return 0 + " km";
     }
   }
 
@@ -209,9 +244,9 @@ export class VisitasclienteComponent implements OnInit {
     this.loading = true;
     setTimeout(() => {
       this.visitas = this.aux.filter((item) => {
-        let flag = [];
+        let flag: any = [];
         if (this.evento) {
-          flag.push(Number(item['idevento']) == Number(this.evento));
+          flag.push(Number(item["idevento"]) == Number(this.evento));
         } else flag.push(true);
         return flag.every((el) => el);
       });
@@ -219,11 +254,11 @@ export class VisitasclienteComponent implements OnInit {
         console.log(this.getDist(item, true));
 
         if (this.distance) {
-          if (this.distopt == 'maior')
+          if (this.distopt == "maior")
             return Number(this.distance) < Number(this.getDist(item, true));
-          else if (this.distopt == 'menor')
+          else if (this.distopt == "menor")
             return Number(this.distance) > Number(this.getDist(item, true));
-          else if (this.distopt == 'igual')
+          else if (this.distopt == "igual")
             return Number(this.distance) == Number(this.getDist(item, true));
         }
         return true;
@@ -238,15 +273,26 @@ export class VisitasclienteComponent implements OnInit {
     try {
       this.cliente = await this.conn.getCliente(this.id).toPromise();
 
-      const [vendedor, objetivos, eventos, contato, visitas] = await Promise.all([
-        this.conn.getVendedores(this.dtini, this.dtfim, this.cliente.idrepresentanteerp as any).toPromise(),
-        this.conn.getObjetivos().toPromise(),
-        this.conn.getEventos().toPromise(),
-        this.conn.getContato().toPromise(),
-        this.conn.getByClient(this.id, this.dtini, this.dtfim).toPromise(),
-      ]);
+      const [vendedor, objetivos, eventos, contato, visitas] =
+        await Promise.all([
+          this.conn
+            .getVendedores(
+              this.dtini,
+              this.dtfim,
+              this.cliente.idrepresentanteerp as any,
+            )
+            .toPromise(),
+          this.conn.getObjetivos().toPromise(),
+          this.conn.getEventos().toPromise(),
+          this.conn.getContato().toPromise(),
+          this.conn.getByClient(this.id, this.dtini, this.dtfim).toPromise(),
+        ]);
 
-      try { this.vendedor = vendedor[0]; } catch { this.vendedor = null; }
+      try {
+        this.vendedor = vendedor[0];
+      } catch {
+        this.vendedor = null;
+      }
       this.objetivos = objetivos;
       this.eventos = eventos;
       this.eventoslist = this.eventos;
@@ -262,8 +308,8 @@ export class VisitasclienteComponent implements OnInit {
 
   structCharts() {
     this.sectors = [
-      { sector: 'Bem-sucedidas', size: 0 },
-      { sector: 'Malsucedidas', size: 0 },
+      { sector: "Bem-sucedidas", size: 0 },
+      { sector: "Malsucedidas", size: 0 },
     ];
     this.statistics = [];
     this.statisticsformas = [];
@@ -271,41 +317,41 @@ export class VisitasclienteComponent implements OnInit {
     let dataforma = {};
 
     for (let o of this.objetivos) {
-      this.objetivosdic[o['iderp']] = o['objetivo'];
-      data[o['objetivo']] = 0;
+      this.objetivosdic[o["iderp"]] = o["objetivo"];
+      data[o["objetivo"]] = 0;
     }
 
     for (let o of this.contato) {
-      this.contatodic[o['iderp']] = o['formacontato'];
-      dataforma[o['formacontato']] = 0;
+      this.contatodic[o["iderp"]] = o["formacontato"];
+      dataforma[o["formacontato"]] = 0;
     }
 
     for (let v of this.visitas) {
-      data[this.objetivosdic[v['idobjetivo']]] += 1;
-      dataforma[this.contatodic[v['idformacontato']]] += 1;
-      if (v['idmotivo']) {
+      data[this.objetivosdic[v["idobjetivo"]]] += 1;
+      dataforma[this.contatodic[v["idformacontato"]]] += 1;
+      if (v["idmotivo"]) {
         this.sectors[1].size += 1;
       } else {
         this.sectors[0].size += 1;
       }
-      if (v['enderecocompleto']) {
+      if (v["enderecocompleto"]) {
         try {
-          v['enderecocompleto'] = JSON.parse(v['enderecocompleto']);
+          v["enderecocompleto"] = JSON.parse(v["enderecocompleto"]);
         } catch (error) {}
       }
-      if (v['imagens']) {
+      if (v["imagens"]) {
         try {
-          v['imagens'] = JSON.parse(v['imagens']);
+          v["imagens"] = JSON.parse(v["imagens"]);
         } catch (error) {}
       }
-      if (v['audios']) {
+      if (v["audios"]) {
         try {
-          v['audios'] = JSON.parse(v['audios']);
+          v["audios"] = JSON.parse(v["audios"]);
         } catch (error) {}
       }
-      if (v['demarcacaoprop']) {
+      if (v["demarcacaoprop"]) {
         try {
-          v['demarcacaoprop'] = JSON.parse(v['demarcacaoprop']);
+          v["demarcacaoprop"] = JSON.parse(v["demarcacaoprop"]);
         } catch (error) {}
       }
     }
