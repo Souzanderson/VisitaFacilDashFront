@@ -18,13 +18,12 @@ export class LoginComponent implements OnInit {
     private conn: ConnectionService,
     private route: Router,
     private util: UteisService,
-    private http: HttpClient
+    private versionRepo: VersionRepository
   ) {}
 
   ngOnInit(): void {
     this.conn.user = null;
-    this.http.get<{ version: number }>('assets/version.json').toPromise()
-      .then(v => this.version = String(v.version).split('').join('.'));
+    this.versionRepo.getVersion().then(v => this.version = v.versionNumber);
   }
 
 
