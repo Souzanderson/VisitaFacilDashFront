@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
 export class VersionModel {
-  version: number;
+  version: number = 123;
 
   public static fromJson(js) {
     let obj = new VersionModel();
@@ -11,18 +11,18 @@ export class VersionModel {
   }
 
   get versionNumber() {
-    return String(this.version).split('').join('.');
+    return String(this.version).split("").join(".");
   }
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class VersionRepository {
   constructor(public http: HttpClient) {}
 
   async getVersion() {
-    const versionData = await this.http.get('/assets/version.json').toPromise();
+    const versionData = await this.http.get("/assets/version.json").toPromise();
     return VersionModel.fromJson(versionData);
   }
 }
