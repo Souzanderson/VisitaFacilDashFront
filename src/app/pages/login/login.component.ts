@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ConnectionService } from 'src/app/services/connection.service';
 import { UteisService } from 'src/app/services/uteis.service';
+import { VersionRepository } from 'src/app/services/version.repository';
 
 @Component({
   selector: 'app-login',
