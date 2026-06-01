@@ -145,6 +145,17 @@
             </div>
           </div>
 
+          <!-- VÍDEOS (não imprime) -->
+          <div class="rel-videos noprint" *ngIf="v.videos && v.videos.length > 0">
+            <div class="rel-videos-label">Vídeos ({{ v.videos.length }})</div>
+            <div class="rel-videos-grid">
+              <div class="rel-video-card" *ngFor="let video of v.videos; let vi = index">
+                <video controls [src]="video.linkvideo" preload="metadata"></video>
+                <div class="rel-video-label">Vídeo {{ vi + 1 }}</div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 

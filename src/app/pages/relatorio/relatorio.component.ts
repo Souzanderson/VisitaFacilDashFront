@@ -67,6 +67,7 @@ export class RelatorioComponent implements OnInit {
       for (const v of this.visitas) {
         if (v.enderecocompleto) { try { v.enderecocompleto = JSON.parse(v.enderecocompleto); } catch (_) {} }
         if (v.imagens)          { try { v.imagens = JSON.parse(v.imagens); } catch (_) {} }
+        if (v.videos)           { try { v.videos = JSON.parse(v.videos); } catch (_) {} }
         if (v.demarcacaoprop)   { try { v.demarcacaoprop = JSON.parse(v.demarcacaoprop); } catch (_) {} }
       }
     } catch (_) {
