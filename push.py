@@ -49,11 +49,11 @@ try:
     try:
         arg = sys.argv[1]
     except: arg = version['version']
-    os.system("ng build --prod --output-hashing=all")
-    ftp_upload(DIST_DIR)
+    os.system("NODE_OPTIONS=--openssl-legacy-provider ng build --prod --output-hashing=all")
     os.system("git add .")
     os.system(f'''git commit -m "{arg}"''')
     os.system("git push origin main")
+    ftp_upload(DIST_DIR)
 except Exception as e:
     print(e)
 
