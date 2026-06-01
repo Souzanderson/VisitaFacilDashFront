@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.conn.user = null;
     this.http.get<{ version: number }>('assets/version.json').toPromise()
-      .then(v => this.version = String(v.version));
+      .then(v => this.version = String(v.version).split('').join('.'));
   }
 
 
