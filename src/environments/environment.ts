@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  URL_SERVER_PY: "http://192.168.11.17:8050/",
+  URL_SERVER_PY: "http://localhost:8050/",
+  // URL_SERVER_PY: "http://192.168.11.17:8050/",
   // URL_SERVER_PY: "https://wsvisitas.malbizer.com.br/",
   GOOGLE_API_MAPS_KEY: "AIzaSyBkAZLUXirldCuw83GGdTQw1qQU7g_IOxs",
   GOOGLE_MAP_ID: "9ee8f7764b320e5f95c2e899",
